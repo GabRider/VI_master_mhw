@@ -1,0 +1,22 @@
+{
+  "name": "vi_master_mhw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "vue serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GabRider/VI_master_mhw.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GabRider/VI_master_mhw/issues"
+  },
+  "homepage": "https://github.com/GabRider/VI_master_mhw#readme",
+  "dependencies": {
+    "vuejs": "^3.0.1"
+  }
+}

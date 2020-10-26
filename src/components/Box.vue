@@ -1,5 +1,7 @@
 <template>
+<div>
   <h1>{{ this.test }}</h1>
+</div>
 </template>
 
 <script>

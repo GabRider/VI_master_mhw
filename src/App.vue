@@ -15,6 +15,26 @@ export default {
   components: {
     HelloWorld,
     Box
+  },
+  data (){
+    return{
+      armorPieces:[]
+    }
+    
+  },
+  watch: {
+    armorPieces : (armor)=>{
+      console.log(armor);
+    }
+  },
+  beforeCreate: function (){
+    let t=this
+    fetch('https://mhw-db.com/armor')
+    .then(response => response.json())
+    .then(armorPieces => {
+
+     t.armorPieces= armorPieces;
+    });
   }
 }
 </script>

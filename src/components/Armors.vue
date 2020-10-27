@@ -2,7 +2,7 @@
     <div>
         <ul>
             <li v-for="armor in armors" v-bind:key="armor.id">
-                <p>{{ armor.id }} - {{ armor.name }}</p>
+                <ArmorCard :value="armor" :key="armor.id"></ArmorCard>
             </li>
         </ul>
         <p></p>
@@ -12,12 +12,16 @@
 
 
 <script>
+import ArmorCard from "./ArmorCard.vue"
 export default {
     props: {
         value: { // input
             type: Array,
             default: () => [], // equivalent à 'default: []'
         },
+    },
+    components: {
+        ArmorCard
     },
     data() {
         return {

@@ -10,15 +10,27 @@
             <p>display Weapons :</p>
             <input type="checkbox" v-model="displayWeapons" />
         </div>
-            <Armors v-if="displayArmors" v-model="armorPieces"></Armors>
-            <Weapons v-if="displayWeapons" v-model="weaponPieces"></Weapons>
+
+        <div v-if="displayArmors">
+            <FiltersArmors
+                :allArmorsInput="allArmors"
+                :filtredArmorsInput="filteredArmors"
+                v-on:filtredArmorsUpdate="filteredArmors = $event"
+            ></FiltersArmors>
+            <Armors v-model="filteredArmors"></Armors>
+        </div>
+        <div v-if="displayWeapons">
+            <Weapons v-model="allWeapons"></Weapons>
+        </div>
     </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import Armors from "./components/Armors";
-import Weapons from "./components/Weapons";
+/*eslint no-unused-vars: "off"*/
+import HelloWorld from "./components/HelloWorld.vue"
+import Armors from "./components/Armors"
+import Weapons from "./components/Weapons"
+import FiltersArmors from "./components/FiltersArmors"
 
 export default {
     name: "App",
@@ -26,34 +38,43 @@ export default {
         HelloWorld,
         Weapons,
         Armors,
+        FiltersArmors,
     },
     data() {
         return {
-            armorPieces: [],
-            weaponPieces: [],
+            allArmors: [],
+            allWeapons: [],
             displayArmors: false,
             displayWeapons: false,
-        };
+            filteredArmors: [],
+            filteredWeapons: [],
+        }
     },
     watch: {
-        armorPieces(armor) {
-            console.log(armor);
+        allArmors(value) {
+            console.log("allArmors change in ", this.$options.name, value)
+        },
+        allWeapons(value) {
+            console.log("allWeapons change in ", this.$options.name, value)
+        },
+        filteredArmors(value) {
+            console.log("filteredArmors change in ", this.$options.name)
         },
     },
     beforeCreate: function () {
-        let t = this;
+        let t = this
         fetch("https://mhw-db.com/armor")
-            .then((response) => response.json())
-            .then((armorPieces) => {
-                t.armorPieces = armorPieces;
-            });
+            .then(response => response.json())
+            .then(armorPieces => {
+                t.allArmors = armorPieces
+            })
         fetch("https://mhw-db.com/weapons")
-            .then((response) => response.json())
-            .then((weaponPieces) => {
-                t.weaponPieces = weaponPieces;
-            });
+            .then(response => response.json())
+            .then(weaponPieces => {
+                t.allWeapons = weaponPieces
+            })
     },
-};
+}
 </script>
 
 <style>

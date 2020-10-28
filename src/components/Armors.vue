@@ -5,7 +5,6 @@
                 <ArmorCard :value="armor" :key="armor.id"></ArmorCard>
             </li>
         </ul>
-        <p></p>
     </div>
 </template>
 
@@ -14,6 +13,7 @@
 <script>
 import ArmorCard from "./ArmorCard.vue"
 export default {
+    name: "Armors",
     props: {
         value: { // input
             type: Array,
@@ -31,16 +31,11 @@ export default {
     watch: {
         value (value) {
             // receive parent change of the armors list
-            console.log("armors changed in composant")
+            console.log("armors changed in composant", this.$options.name)
             this.armors = value
         },
     },
-    methods: {
-        updateParentArmors(armors) {
-            this.armors = armors
-            this.$emit("input", this.armors) // update parent armors list
-        }
-    },
+    methods: {  },
 }
 // this.$emit("input", this.armors)
 </script>

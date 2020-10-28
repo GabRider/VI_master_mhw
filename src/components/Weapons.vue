@@ -5,7 +5,6 @@
                 <WeaponCard :value="weapon" :key="weapon.id"></WeaponCard>
             </li>
         </ul>
-        <p></p>
     </div>
 </template>
 
@@ -14,6 +13,7 @@
 <script>
 import WeaponCard from "./WeaponCard.vue"
 export default {
+    name: "Weapons",
     props: {
         value: { // input
             type: Array,
@@ -31,16 +31,15 @@ export default {
     watch: {
         value (value) {
             // receive parent change of the armors list
-            console.log("weapons changed in composant")
+            console.log("weapons changed in composant", this.$options.name)
             this.weapons = value
         },
     },
     methods: {
-        updateParentArmors(weapons) {
+        updateParentWeapons(weapons) {
             this.weapons = weapons
-            this.$emit("input", this.weapons) // update parent armors list
+            this.$emit("input", this.weapons) // update parent weapons list
         }
     },
 }
-// this.$emit("input", this.armors)
 </script>

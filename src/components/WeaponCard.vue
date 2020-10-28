@@ -52,6 +52,7 @@ assets : Object
 elderseal : null
 */
 export default {
+    name: "WeaponrCard",
     props: {
         value: {
             // input
@@ -62,16 +63,16 @@ export default {
     data() {
         return {
             piece: this.value,
-        };
+        }
     },
     watch: {
         value(value) {
             // receive parent change of the piece
-            console.log("armors changed in composant");
-            this.piece = value;
+            console.log("piece changed in composant", this.$options.name)
+            this.piece = value
         },
     },
-};
+}
 </script>
 
 

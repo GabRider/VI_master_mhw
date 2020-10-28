@@ -21,14 +21,8 @@
                 v-else-if="piece.assets === null && piece.type === 'waist'"
                 src="https://assets.mhw-db.com/armor/9f04b4887ee16b009d6403a676b73b79c51ee191.ef72cb09966c41a20ef3dbea3797f081.png"
             />
-            <img
-                v-else-if="piece.assets.imageMale"
-                :src="piece.assets.imageMale"
-            />
-            <img
-                v-else-if="piece.assets.imageFemale"
-                :src="piece.assets.imageFemale"
-            />
+            <img v-else-if="piece.assets.imageMale" :src="piece.assets.imageMale" />
+            <img v-else-if="piece.assets.imageFemale" :src="piece.assets.imageFemale" />
             <div class="container">
                 <h4>
                     <b>{{ piece.name }}</b>
@@ -58,6 +52,7 @@ assets : Object
     imageFemale : String url
 */
 export default {
+    name: "ArmorCard",
     props: {
         value: {
             // input
@@ -68,16 +63,16 @@ export default {
     data() {
         return {
             piece: this.value,
-        };
+        }
     },
     watch: {
         value(value) {
             // receive parent change of the piece
-            console.log("armors changed in composant");
-            this.piece = value;
+            console.log("piece changed in composant", this.$options.name)
+            this.piece = value
         },
     },
-};
+}
 </script>
 
 

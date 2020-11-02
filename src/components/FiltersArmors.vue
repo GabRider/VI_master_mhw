@@ -100,30 +100,22 @@
 
 
 <script>
+/*
+Output events :
+    - filteredArmors : send the filter applied to allArmors
+*/
 export default {
     name: "FiltersArmors",
     props: {
-        allArmorsInput: {
+        allArmors: {
             // input
             type: Array,
             default: () => [], // equivalent à 'default: []'
-        },
-        filtredArmorsInput: {
-            // input
-            type: Array,
-            default: () => [], // equivalent à 'default: []'
-        },
-    },
-    model: {
-        // https://fr.vuejs.org/v2/guide/components-custom-events.html
-        prop: "filtredArmorsInput",
-        event: "filtredArmorsUpdate",
+        }
     },
     components: {},
     data() {
         return {
-            allArmors: this.allArmorsInput,
-            filtredArmors: this.filtredArmorsInput,
             fields: ["name", "type", "rank", "slots"],
             name: "",
             type: "all",
@@ -132,15 +124,9 @@ export default {
         }
     },
     watch: {
-        allArmorsInput(value) {
+        allArmors() {
             // receive parent change
             console.log("allArmors changed in composant", this.$options.name)
-            this.allArmors = value
-        },
-        filtredArmorsInput(value) {
-            // receive parent change
-            console.log("filtredArmors changed in composant", this.$options.name)
-            this.filtredArmors = value
         },
     },
     methods: {
@@ -157,9 +143,9 @@ export default {
                     return this.name === "" ? true : e.name.includes(this.name)
                 else return false
             }
-            this.filtredArmors = this.allArmors.filter(predicate)
-            console.log("Nb of element:", this.filtredArmors.length)
-            this.$emit("filtredArmorsUpdate", this.filtredArmors) // update parent list
+            const filteredArmors = this.allArmors.filter(predicate)
+            console.log("Nb of element:", filteredArmors.length)
+            this.$emit("filteredArmors", filteredArmors) // send event output
         },
     },
 }

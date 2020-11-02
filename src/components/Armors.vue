@@ -2,7 +2,11 @@
     <div>
         <ul>
             <li v-for="armor in armors" v-bind:key="armor.id">
-                <ArmorCard :value="armor" :key="armor.id"></ArmorCard>
+                <ArmorCard
+                    :piece="armor"
+                    v-on:selectPiece="handleSelectPiece"
+                    v-on:unselectPiece="handleUnselectPiece"
+                ></ArmorCard>
             </li>
         </ul>
     </div>
@@ -11,31 +15,41 @@
 
 
 <script>
+/*
+Output events :
+    - selectPiece : send selected armor piece object
+    - unselectPiece : send unselected armor piece object
+*/
 import ArmorCard from "./ArmorCard.vue"
 export default {
     name: "Armors",
     props: {
-        value: { // input
+        armors: {
+            // input
             type: Array,
             default: () => [], // equivalent à 'default: []'
         },
     },
     components: {
-        ArmorCard
+        ArmorCard,
     },
     data() {
-        return {
-            armors: this.value,
-        }
+        return {}
     },
     watch: {
-        value (value) {
+        armors() {
             // receive parent change of the armors list
             console.log("armors changed in composant", this.$options.name)
-            this.armors = value
         },
     },
-    methods: {  },
+    methods: {
+        handleSelectPiece(event) {
+            this.$emit("selectPiece", event) // send event output
+        },
+        handleUnselectPiece(event) {
+            this.$emit("unselectPiece", event) // send event output
+        },
+    },
 }
 // this.$emit("input", this.armors)
 </script>

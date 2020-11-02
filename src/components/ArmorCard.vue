@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div class="card">
+        <div class="card" @click="toggleSelect">
+            <div v-if="isSelected">
+                <p>jkldsjflkéas</p>
+            </div>
             <img
                 v-if="piece.assets === null && piece.type === 'chest'"
                 src="https://assets.mhw-db.com/armor/31274503eeadb6cb37266a2f578db8c92456a984.70b16041b1e6483321cdd0ad72e8ce6f.png"
@@ -51,10 +54,15 @@ assets : Object
     imageMale : String url
     imageFemale : String url
 */
+/*
+Output events :
+    - selectPiece : send selected armor piece object
+    - unselectPiece : send unselected armor piece object
+*/
 export default {
     name: "ArmorCard",
     props: {
-        value: {
+        piece: {
             // input
             type: Object,
             default: () => {},
@@ -62,14 +70,22 @@ export default {
     },
     data() {
         return {
-            piece: this.value,
+            isSelected: false,
         }
     },
     watch: {
-        value(value) {
+        piece() {
             // receive parent change of the piece
             console.log("piece changed in composant", this.$options.name)
-            this.piece = value
+        },
+    },
+    methods: {
+        toggleSelect() {
+            console.log("toggle Select")
+            this.isSelected = !this.isSelected
+            // send event output
+            if (this.isSelected) this.$emit("selectPiece", this.piece)
+            else this.$emit("unselectPiece", this.piece) 
         },
     },
 }

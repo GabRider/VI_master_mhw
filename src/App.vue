@@ -1,7 +1,12 @@
 <template>
     <div id="app">
         <img alt="Vue logo" src="./assets/logo.png" />
-        <HelloWorld msg="Welcome to Your Vue.js App" />
+        <div>
+            <div v-if="myCurrentArmorSet.length"><b>Current Armor SET :</b></div>
+            <div v-for="armor in myCurrentArmorSet" v-bind:key="armor.id">
+                {{ armor.name }}
+            </div>
+        </div>
         <div>
             <p>display Armors :</p>
             <input type="checkbox" v-model="displayArmors" />
@@ -13,11 +18,14 @@
 
         <div v-if="displayArmors">
             <FiltersArmors
-                :allArmorsInput="allArmors"
-                :filtredArmorsInput="filteredArmors"
-                v-on:filtredArmorsUpdate="filteredArmors = $event"
+                :allArmors.sync="allArmors"
+                v-on:filteredArmors="filteredArmors = $event"
             ></FiltersArmors>
-            <Armors v-model="filteredArmors"></Armors>
+            <Armors
+                :armors.sync="filteredArmors"
+                v-on:selectPiece="handleSelectPiece"
+                v-on:unselectPiece="handleUnselectPiece"
+            ></Armors>
         </div>
         <div v-if="displayWeapons">
             <Weapons v-model="allWeapons"></Weapons>
@@ -27,7 +35,6 @@
 
 <script>
 /*eslint no-unused-vars: "off"*/
-import HelloWorld from "./components/HelloWorld.vue"
 import Armors from "./components/Armors"
 import Weapons from "./components/Weapons"
 import FiltersArmors from "./components/FiltersArmors"
@@ -35,7 +42,6 @@ import FiltersArmors from "./components/FiltersArmors"
 export default {
     name: "App",
     components: {
-        HelloWorld,
         Weapons,
         Armors,
         FiltersArmors,
@@ -48,6 +54,7 @@ export default {
             displayWeapons: false,
             filteredArmors: [],
             filteredWeapons: [],
+            myCurrentArmorSet: [],
         }
     },
     watch: {
@@ -59,6 +66,23 @@ export default {
         },
         filteredArmors(value) {
             console.log("filteredArmors change in ", this.$options.name)
+        },
+    },
+    methods: {
+        handleSelectPiece(piece) {
+            console.log("Selected armor", piece)
+            if (!this.myCurrentArmorSet.some(a => a.id === piece.id)) {
+                this.myCurrentArmorSet.push(piece)
+            }
+        },
+        handleUnselectPiece(piece) {
+            console.log("Unselected armor", piece)
+            if (this.myCurrentArmorSet.some(a => a.id === piece.id)) {
+                this.myCurrentArmorSet = this.myCurrentArmorSet.filter(a => a.id !== piece.id)
+            }
+        },
+        test(e) {
+            console.log("### TEST", e)
         },
     },
     beforeCreate: function () {

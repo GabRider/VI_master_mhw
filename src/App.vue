@@ -2,9 +2,14 @@
     <div id="app">
         <img alt="Vue logo" src="./assets/logo.png" />
         <div>
-            <div v-if="myCurrentArmorSet.length"><b>Current Armor SET :</b></div>
-            <div v-for="armor in myCurrentArmorSet" v-bind:key="armor.id">
-                {{ armor.name }}
+            <div  v-if="myCurrentArmorSet.length"><b>Current Armor SET :</b></div>
+            <div class="row card-columns ml-2" v-for="armor in myCurrentArmorSet" v-bind:key="armor.id">
+                <ArmorCard
+                    v-bind:key="armor.id"
+                    :piece="armor"
+                    v-on:selectPiece="handleSelectPiece"
+                    v-on:unselectPiece="handleUnselectPiece"
+                ></ArmorCard>
             </div>
         </div>
         <div>
@@ -38,6 +43,7 @@
 import Armors from "./components/Armors"
 import Weapons from "./components/Weapons"
 import FiltersArmors from "./components/FiltersArmors"
+import ArmorCard from "./components/ArmorCard.vue"
 
 export default {
     name: "App",
@@ -45,6 +51,7 @@ export default {
         Weapons,
         Armors,
         FiltersArmors,
+        ArmorCard,
     },
     data() {
         return {

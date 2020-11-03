@@ -1,40 +1,92 @@
 <template>
     <div>
-        <div class="card" @click="toggleSelect">
-            <div v-if="isSelected">
-                <p>jkldsjflkéas</p>
+        <div
+            class="card"
+            @click="toggleSelect"
+            style="max-width: 13rem"
+            v-bind:class="{ 'border-dark': !isSelected, 'border-success': isSelected }"
+        >
+            <div class="col-auto">
+                <img
+                    v-if="piece.assets === null"
+                    :src="getImgEmpty(piece.type)"
+                    width="128"
+                    height="128"
+                />
+                <img
+                    v-else-if="piece.assets.imageMale"
+                    :src="piece.assets.imageMale"
+                    width="128"
+                    height="128"
+                    class=""
+                />
+                <img
+                    v-else-if="piece.assets.imageFemale"
+                    :src="piece.assets.imageFemale"
+                    width="128"
+                    height="128"
+                />
             </div>
-            <img
-                v-if="piece.assets === null && piece.type === 'chest'"
-                src="https://assets.mhw-db.com/armor/31274503eeadb6cb37266a2f578db8c92456a984.70b16041b1e6483321cdd0ad72e8ce6f.png"
-            />
-            <img
-                v-else-if="piece.assets === null && piece.type === 'gloves'"
-                src="https://assets.mhw-db.com/armor/9b6875e88ccce560567805a05013c9dc7442da62.b20183ce896973506ff2e7efefb83017.png"
-            />
-            <img
-                v-else-if="piece.assets === null && piece.type === 'head'"
-                src="https://assets.mhw-db.com/armor/9e9e2c421697e3deb8fc8d362a7f2b8f911fa511.7284b9666abcf7560ace82a4e4a72f1d.png"
-            />
-            <img
-                v-else-if="piece.assets === null && piece.type === 'legs'"
-                src="https://assets.mhw-db.com/armor/c5c55c125f9ac5c9c2e074fcf171bdffd20af8e9.f428ae0c7a70bdccec78a78641054669.png"
-            />
-            <img
-                v-else-if="piece.assets === null && piece.type === 'waist'"
-                src="https://assets.mhw-db.com/armor/9f04b4887ee16b009d6403a676b73b79c51ee191.ef72cb09966c41a20ef3dbea3797f081.png"
-            />
-            <img v-else-if="piece.assets.imageMale" :src="piece.assets.imageMale" />
-            <img v-else-if="piece.assets.imageFemale" :src="piece.assets.imageFemale" />
-            <div class="container">
-                <h4>
-                    <b>{{ piece.name }}</b>
-                </h4>
-                <p>type: {{ piece.type }}</p>
-                <p>rank: {{ piece.rank }}</p>
-                <p>defense: {{ piece.defense.base }}</p>
-                <p>resistances: {{ piece.resistances }}</p>
+            <p class="card-header">
+                <b>{{ piece.name }}</b>
+            </p>
+            <div class="card-body row text-left pr-0 py-1">
+                <div class="col-sm-3">
+                    <span class="badge badge-primary">type</span>
+                </div>
+                <span class="col"> {{ piece.type }}</span>
+                <div class="w-100"></div>
+                <!-- retour à la ligne -->
+                <div class="col-sm-3">
+                    <span class="badge badge-primary">rank</span>
+                </div>
+                <span class="col"> {{ piece.rank }}</span>
+                <div class="w-100"></div>
+                <!-- retour à la ligne -->
+                <div class="col-sm-4">
+                    <span class="badge badge-primary">defense</span>
+                </div>
+                <span class="col"> {{ piece.defense.base }}</span>
+                <div class="w-100"></div>
+                <!-- retour à la ligne -->
+                <div class="col-sm-3">
+                    <span class="badge badge-primary">jewels</span>
+                </div>
+                <div class="col">
+                    <div class="col row">
+                        <div class="" v-for="lvl in getListRankJewels(piece.slots)" :key="lvl.id">
+                            <img :src="getImgJewel(lvl.rank)" width="24" height="24" />
+                            <span class="pr-2"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100"></div>
+                <!-- retour à la ligne -->
+                <div class="col-sm-4">
+                    <span class="badge badge-primary">resistances</span>
+                </div>
+                <div class="w-100"></div>
+                <!-- retour à la ligne 
+                <div class="col-4 mx-0 px-0" v-for="[key, value] in Object.entries(piece.resistances)" :key="key">
+                    <img :src="getImg(key)" width="32" height="32" />
+                    <span >{{ value }}</span>
+                </div> -->
+                <!-- retour à la ligne -->
+                <div class="col">
+                    <div class="col row d-flex justify-content-between">
+                        <div v-for="[key, value] in Object.entries(piece.resistances)" :key="key">
+                            <img :src="getImg(key)" width="32" height="32" />
+                            <span class="pr-0">{{ value }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100"></div>
+                <!-- retour à la ligne -->
             </div>
+            <div
+                class="card-footer"
+                v-bind:class="{ 'border-dark': !isSelected, 'bg-success': isSelected }"
+            ></div>
         </div>
     </div>
 </template>
@@ -53,6 +105,8 @@ slots : Array
 assets : Object
     imageMale : String url
     imageFemale : String url
+resistances
+defense
 */
 /*
 Output events :
@@ -85,27 +139,23 @@ export default {
             this.isSelected = !this.isSelected
             // send event output
             if (this.isSelected) this.$emit("selectPiece", this.piece)
-            else this.$emit("unselectPiece", this.piece) 
+            else this.$emit("unselectPiece", this.piece)
+        },
+        getListRankJewels(slots) {
+            return slots.map((e, i) => {
+                e.id = i
+                return e
+            })
+        },
+        getImgEmpty(name) {
+            return require("../assets/no-" + name + ".png")
+        },
+        getImg(name) {
+            return require("../assets/" + name + ".png")
+        },
+        getImgJewel(lvl) {
+            return require("../assets/joyau-" + lvl + ".png")
         },
     },
 }
 </script>
-
-
-<style>
-.card {
-    /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transition: 0.3s;
-}
-
-/* On mouse-over, add a deeper shadow */
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-}
-
-/* Add some padding inside the card container */
-.container {
-    padding: 2px 16px;
-}
-</style>

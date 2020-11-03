@@ -1,14 +1,12 @@
 <template>
-    <div>
-        <ul>
-            <li v-for="armor in armors" v-bind:key="armor.id">
-                <ArmorCard
-                    :piece="armor"
-                    v-on:selectPiece="handleSelectPiece"
-                    v-on:unselectPiece="handleUnselectPiece"
-                ></ArmorCard>
-            </li>
-        </ul>
+    <div class="row card-columns ml-2">
+        <ArmorCard
+            v-for="armor in armors"
+            v-bind:key="armor.id"
+            :piece="armor"
+            v-on:selectPiece="handleSelectPiece"
+            v-on:unselectPiece="handleUnselectPiece"
+        ></ArmorCard>
     </div>
 </template>
 

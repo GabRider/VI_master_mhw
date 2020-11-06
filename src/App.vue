@@ -1,19 +1,13 @@
 <template>
     <div id="app">
         <img alt="Vue logo" src="./assets/logo.png" />
-        <div>
-            <div v-if="myCurrentArmorSet.length"><b>Current Armor SET :</b></div>
-            <div class="row card-columns ml-2">
-                <ArmorCard
-                    v-for="armor in myCurrentArmorSet"
-                    v-bind:key="armor.id"
-                    :piece="armor"
-                    :myCurrentArmorSetInput="myCurrentArmorSet"
-                    v-on:selectPiece="handleSelectPiece"
-                    v-on:unselectPiece="handleUnselectPiece"
-                ></ArmorCard>
-            </div>
-        </div>
+
+        <ArmorSet
+            :myCurrentArmorSet.sync="myCurrentArmorSet"
+            v-on:selectPiece="handleSelectPiece"
+            v-on:unselectPiece="handleUnselectPiece"
+        ></ArmorSet>
+
         <div>
             <p>display Armors :</p>
             <input type="checkbox" v-model="displayArmors" />
@@ -46,7 +40,7 @@
 import Armors from "./components/Armors"
 import Weapons from "./components/Weapons"
 import FiltersArmors from "./components/FiltersArmors"
-import ArmorCard from "./components/ArmorCard.vue"
+import ArmorSet from "./components/ArmorSet.vue"
 
 export default {
     name: "App",
@@ -54,7 +48,7 @@ export default {
         Weapons,
         Armors,
         FiltersArmors,
-        ArmorCard,
+        ArmorSet,
     },
     data() {
         return {

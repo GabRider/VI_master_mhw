@@ -121,25 +121,38 @@ export default {
             type: Object,
             default: () => {},
         },
+        myCurrentArmorSetInput: {
+            // input
+            type: Array,
+            default: () => [],
+        },
     },
     data() {
         return {
-            isSelected: false,
+            myCurrentArmorSet: this.myCurrentArmorSetInput,
         }
+    },
+    computed: {
+        isSelected() {
+            return this.myCurrentArmorSet.some(e => e.id === this.piece.id)
+        },
     },
     watch: {
         piece() {
             // receive parent change of the piece
             console.log("piece changed in composant", this.$options.name)
         },
+        myCurrentArmorSetInput(newSet) {
+            this.myCurrentArmorSet = newSet
+        },
     },
     methods: {
         toggleSelect() {
             console.log("toggle Select")
-            this.isSelected = !this.isSelected
+            //this.isSelected = !this.isSelected
             // send event output
-            if (this.isSelected) this.$emit("selectPiece", this.piece)
-            else this.$emit("unselectPiece", this.piece)
+            if (this.isSelected) this.$emit("unselectPiece", this.piece)
+            else this.$emit("selectPiece", this.piece)
         },
         getListRankJewels(slots) {
             return slots.map((e, i) => {

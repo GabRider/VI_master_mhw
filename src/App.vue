@@ -2,11 +2,13 @@
     <div id="app">
         <img alt="Vue logo" src="./assets/logo.png" />
         <div>
-            <div  v-if="myCurrentArmorSet.length"><b>Current Armor SET :</b></div>
-            <div class="row card-columns ml-2" v-for="armor in myCurrentArmorSet" v-bind:key="armor.id">
+            <div v-if="myCurrentArmorSet.length"><b>Current Armor SET :</b></div>
+            <div class="row card-columns ml-2">
                 <ArmorCard
+                    v-for="armor in myCurrentArmorSet"
                     v-bind:key="armor.id"
                     :piece="armor"
+                    :myCurrentArmorSetInput="myCurrentArmorSet"
                     v-on:selectPiece="handleSelectPiece"
                     v-on:unselectPiece="handleUnselectPiece"
                 ></ArmorCard>
@@ -28,6 +30,7 @@
             ></FiltersArmors>
             <Armors
                 :armors.sync="filteredArmors"
+                :myCurrentArmorSet="myCurrentArmorSet"
                 v-on:selectPiece="handleSelectPiece"
                 v-on:unselectPiece="handleUnselectPiece"
             ></Armors>
@@ -79,7 +82,9 @@ export default {
         handleSelectPiece(piece) {
             console.log("Selected armor", piece)
             if (!this.myCurrentArmorSet.some(a => a.id === piece.id)) {
-                this.myCurrentArmorSet.push(piece)
+                let tmp = this.myCurrentArmorSet.filter(e => e.type !== piece.type)
+                tmp.push(piece)
+                this.myCurrentArmorSet = tmp
             }
         },
         handleUnselectPiece(piece) {

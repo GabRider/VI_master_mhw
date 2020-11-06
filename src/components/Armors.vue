@@ -4,6 +4,7 @@
             v-for="armor in armors"
             v-bind:key="armor.id"
             :piece="armor"
+            :myCurrentArmorSetInput="myCurrentArmorSet"
             v-on:selectPiece="handleSelectPiece"
             v-on:unselectPiece="handleUnselectPiece"
         ></ArmorCard>
@@ -26,6 +27,10 @@ export default {
             // input
             type: Array,
             default: () => [], // equivalent à 'default: []'
+        },
+        myCurrentArmorSet: {
+            type: Array,
+            default: () => [],
         },
     },
     components: {

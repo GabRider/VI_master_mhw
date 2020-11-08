@@ -1,13 +1,12 @@
 <template>
     <div id="app">
         <img alt="Vue logo" src="./assets/logo.png" />
-
+        <PlayerChart :displayed="this.infoChart.elementaryDefenses"/>
         <ArmorSet
             :myCurrentArmorSet.sync="myCurrentArmorSet"
             v-on:selectPiece="handleSelectPiece"
             v-on:unselectPiece="handleUnselectPiece"
         ></ArmorSet>
-
         <div>
             <p>display Armors :</p>
             <input type="checkbox" v-model="displayArmors" />
@@ -41,7 +40,8 @@ import Armors from "./components/Armors"
 import Weapons from "./components/Weapons"
 import FiltersArmors from "./components/FiltersArmors"
 import ArmorSet from "./components/ArmorSet.vue"
-
+import PlayerChart from "./components/PlayerChart.vue"
+import * as radarFunc from "./scripts/RadarFunctions"
 export default {
     name: "App",
     components: {
@@ -49,6 +49,7 @@ export default {
         Armors,
         FiltersArmors,
         ArmorSet,
+        PlayerChart
     },
     data() {
         return {
@@ -59,9 +60,14 @@ export default {
             filteredArmors: [],
             filteredWeapons: [],
             myCurrentArmorSet: [],
+            infoChart: {}
         }
     },
     watch: {
+        myCurrentArmorSet(value){
+           this.infoChart= radarFunc.getInfoForAnyChart(value)
+        },
+        
         allArmors(value) {
             console.log("allArmors change in ", this.$options.name, value)
         },

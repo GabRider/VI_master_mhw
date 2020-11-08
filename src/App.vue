@@ -8,6 +8,20 @@
             v-on:unselectPiece="handleUnselectPiece"
         ></ArmorSet>
         <div>
+            <div><b>Current Weapon :</b></div>
+            <div class="row card-columns ml-2">
+                <WeaponCard
+                    v-for="weapon in myCurrentWeapon"
+                    v-bind:key="weapon.id"
+                    :piece="weapon"
+                    :myCurrentWeaponInput.sync="myCurrentWeapon"
+                    v-on:selectPiece="handleSelectWeapon"
+                    v-on:unselectPiece="handleUnselectWeapon"
+                ></WeaponCard>
+            </div>
+        </div>
+
+        <div>
             <p>display Armors :</p>
             <input type="checkbox" v-model="displayArmors" />
         </div>
@@ -29,7 +43,12 @@
             ></Armors>
         </div>
         <div v-if="displayWeapons">
-            <Weapons v-model="allWeapons"></Weapons>
+            <Weapons
+                :weapons.sync="allWeapons"
+                :myCurrentWeapon.sync="myCurrentWeapon"
+                v-on:selectPiece="handleSelectWeapon"
+                v-on:unselectPiece="handleUnselectWeapon"
+            ></Weapons>
         </div>
     </div>
 </template>
@@ -42,6 +61,8 @@ import FiltersArmors from "./components/FiltersArmors"
 import ArmorSet from "./components/ArmorSet.vue"
 import PlayerChart from "./components/PlayerChart.vue"
 import * as radarFunc from "./scripts/RadarFunctions"
+import WeaponCard from "./components/WeaponCard.vue"
+
 export default {
     name: "App",
     components: {
@@ -49,7 +70,8 @@ export default {
         Armors,
         FiltersArmors,
         ArmorSet,
-        PlayerChart
+        PlayerChart,
+        WeaponCard,
     },
     data() {
         return {
@@ -60,6 +82,7 @@ export default {
             filteredArmors: [],
             filteredWeapons: [],
             myCurrentArmorSet: [],
+            myCurrentWeapon: [],
             infoChart: {}
         }
     },
@@ -93,6 +116,15 @@ export default {
                 this.myCurrentArmorSet = this.myCurrentArmorSet.filter(a => a.id !== piece.id)
             }
         },
+        handleSelectWeapon(piece) {
+            this.myCurrentWeapon = [piece]
+            console.log("Selected Weapon", this.myCurrentWeapon)
+        },
+        handleUnselectWeapon(piece) {
+            console.log("Unselected Weapon", piece)
+            this.myCurrentWeapon = []
+        },
+
         test(e) {
             console.log("### TEST", e)
         },

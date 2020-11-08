@@ -1,21 +1,82 @@
 <template>
     <div>
-        <div class="card">
-            <img v-if="piece.assets === null" />
-            <img
-                v-else-if="piece.assets.image"
-                :src="piece.assets.image"
-            />
-            <div class="container">
-                <h4>
-                    <b>{{ piece.name }}</b>
-                </h4>
-                <p>type: {{ piece.type }}</p>
-                <p>rarity: {{ piece.rarity }}</p>
-                <p>attack: {{ piece.attack.display }}</p>
-                <p>elements: {{ piece.elements }}</p>
-                <p>elderseal: {{ piece.elderseal }}</p>
+        <div
+            class="card"
+            @click="toggleSelect"
+            style="max-width: 13rem"
+            v-bind:class="{ 'border-dark': !isSelected, 'border-success': isSelected }"
+        >
+            <div class="col-auto">
+                <img
+                    v-if="piece.assets === null"
+                    :src="getImg(piece.type)"
+                    :alt="piece.type"
+                    width="128"
+                    height="128"
+                />
+                <img
+                    v-else-if="piece.assets.image"
+                    :src="piece.assets.image"
+                    width="128"
+                    height="128"
+                />
             </div>
+            <p class="card-header">
+                <b>{{ piece.name }}</b>
+            </p>
+            <div class="card-body row text-left pr-0 py-1">
+                <div class="col-sm-3">
+                    <span class="badge badge-primary">type</span>
+                </div>
+                <span class="col"> {{ piece.type }}</span>
+                <div class="w-100"></div>
+                <!-- retour à la ligne -->
+                <div class="col-sm-3">
+                    <span class="badge badge-primary">rarity</span>
+                </div>
+                <span class="col"> {{ piece.rarity }}</span>
+                <div class="w-100"></div>
+                <!-- retour à la ligne -->
+                <div class="col-sm-3">
+                    <span class="badge badge-primary">attack</span>
+                </div>
+                <span class="col"> {{ piece.attack.display }}</span>
+                <div class="w-100"></div>
+                <!-- retour à la ligne -->
+                <div class="col-sm-4">
+                    <span class="badge badge-primary">elderseal</span>
+                </div>
+                <span class="col" v-if="piece.elderseal === null"> None</span>
+                <span class="col" v-else> {{ piece.elderseal }}</span>
+                <div class="w-100"></div>
+                <!-- retour à la ligne -->
+                <div class="col-sm-3">
+                    <span class="badge badge-primary">jewels</span>
+                </div>
+                <div class="col">
+                    <div class="col row">
+                        <div class="" v-for="lvl in getListRankJewels(piece.slots)" :key="lvl.id">
+                            <img :src="getImgJewel(lvl.rank)" width="24" height="24" />
+                            <span class="pr-2"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100"></div>
+                <!-- retour à la ligne -->
+                <div class="col-sm-4">
+                    <span class="badge badge-primary">elements</span>
+                </div>
+                <div v-if="piece.elements && piece.elements.length > 0" class="ml-1">
+                    <img :src="getImg(piece.elements[0].type)" width="32" height="32" />
+                    <span class="pr-0">{{ piece.elements[0].damage }}</span>
+                </div>
+                <div class="w-100"></div>
+                <!-- retour à la ligne -->
+            </div>
+            <div
+                class="card-footer"
+                v-bind:class="{ 'border-dark': !isSelected, 'bg-success': isSelected }"
+            ></div>
         </div>
     </div>
 </template>
@@ -28,68 +89,82 @@
 name : String
 type : String
 rarity : Int
-attack : Object
-    display : Int
-    raw : Int
-elements : Array<Object>
-    type : String
-    damage : Int
-    hidden : Boolean
 slots : Array
     - rank : Int
     - rank : Int
-durability : Array<Object>
-    red : Int
-    orange : Int
-    yellow : Int
-    green : Int
-    blue : Int
-    white : Int
-    purple : Int
 assets : Object
-    icon : String url
-    image : String url
-elderseal : null
+    imageMale : String url
+    imageFemale : String url
+elements
+attack
+*/
+/*
+Output events :
+    - selectPiece : send selected armor piece object
+    - unselectPiece : send unselected armor piece object
 */
 export default {
-    name: "WeaponrCard",
+    name: "WeaponCard",
     props: {
-        value: {
+        piece: {
             // input
             type: Object,
-            default: () => {},
+        },
+        myCurrentWeaponInput: {
+            // input
+            type: Array,
         },
     },
     data() {
+        if (!this.myCurrentWeaponInput)
+            console.log(
+                "data this.myCurrentWeaponInput",
+                this.$options.name,
+                this.myCurrentWeaponInput
+            )
         return {
-            piece: this.value,
+            myCurrentWeapon: this.myCurrentWeaponInput,
         }
     },
+    computed: {
+        isSelected() {
+            return this.myCurrentWeapon.some(e => e.id === this.piece.id)
+        },
+    },
     watch: {
-        value(value) {
+        piece() {
             // receive parent change of the piece
             console.log("piece changed in composant", this.$options.name)
-            this.piece = value
+        },
+        myCurrentWeaponInput(newWeapon) {
+            this.myCurrentWeapon = newWeapon
+        },
+    },
+    methods: {
+        toggleSelect() {
+            console.log("toggle Select")
+            //this.isSelected = !this.isSelected
+            // send event output
+            if (this.isSelected) this.$emit("unselectPiece", this.piece)
+            else this.$emit("selectPiece", this.piece)
+        },
+        getListRankJewels(slots) {
+            return slots.map((e, i) => {
+                e.id = i
+                return e
+            })
+        },
+        getImg(name) {
+            try {
+                return require("../assets/" + name + ".png")
+            } catch (e) {
+                console.log(name + ".png note found.")
+                return ""
+            }
+        },
+        getImgJewel(lvl) {
+            return require("../assets/joyau-" + lvl + ".png")
         },
     },
 }
 </script>
-
-
-<style>
-.card {
-    /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transition: 0.3s;
-}
-
-/* On mouse-over, add a deeper shadow */
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-}
-
-/* Add some padding inside the card container */
-.container {
-    padding: 2px 16px;
-}
-</style>

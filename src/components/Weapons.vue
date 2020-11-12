@@ -1,5 +1,5 @@
 <template>
-    <div class="row card-columns ml-2">
+    <div class="row card-columns">
         <WeaponCard
             v-for="weapon in weapons"
             v-bind:key="weapon.id"

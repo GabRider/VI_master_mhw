@@ -1,15 +1,15 @@
 <template>
     <div id="app">
         <img alt="Vue logo" src="./assets/logo.png" />
-        <PlayerChart :displayed="this.infoChart.elementaryDefenses"/>
+        <PlayerChart :displayed="this.infoChart.elementaryDefenses" />
         <ArmorSet
             :myCurrentArmorSet.sync="myCurrentArmorSet"
             v-on:selectPiece="handleSelectPiece"
             v-on:unselectPiece="handleUnselectPiece"
         ></ArmorSet>
+        
         <div>
-            <div><b>Current Weapon :</b></div>
-            <div class="row card-columns ml-2">
+            <div class="row card-columns">
                 <WeaponCard
                     v-for="weapon in myCurrentWeapon"
                     v-bind:key="weapon.id"
@@ -21,47 +21,68 @@
             </div>
         </div>
 
-        <div>
-            <p>display Armors :</p>
-            <input type="checkbox" v-model="displayArmors" />
-        </div>
-        <div>
-            <p>display Weapons :</p>
-            <input type="checkbox" v-model="displayWeapons" />
+        <div class="mb-3">
+            <div class="form-check form-check-inline">
+                <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="display1"
+                    v-model="displayArmors"
+                />
+                <label class="form-check-label" for="display1">Display Armors</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="display2"
+                    v-model="displayWeapons"
+                />
+                <label class="form-check-label" for="display2">Display Weapons</label>
+            </div>
         </div>
 
-        <div v-if="displayArmors">
-            <FiltersArmors
-                :allArmors.sync="allArmors"
-                v-on:filteredArmors="filteredArmors = $event"
-            ></FiltersArmors>
-            <Armors
-                :armors.sync="filteredArmors"
-                :myCurrentArmorSet="myCurrentArmorSet"
-                v-on:selectPiece="handleSelectPiece"
-                v-on:unselectPiece="handleUnselectPiece"
-            ></Armors>
-        </div>
-        <div v-if="displayWeapons">
-            <Weapons
-                :weapons.sync="allWeapons"
-                :myCurrentWeapon.sync="myCurrentWeapon"
-                v-on:selectPiece="handleSelectWeapon"
-                v-on:unselectPiece="handleUnselectWeapon"
-            ></Weapons>
+        <div class="pl-3 px-3">
+            <div v-if="displayArmors">
+                <FiltersArmors
+                    :allArmors.sync="allArmors"
+                    v-on:filteredArmors="filteredArmors = $event"
+                ></FiltersArmors>
+                <Armors
+                    :armors.sync="filteredArmors"
+                    :myCurrentArmorSet="myCurrentArmorSet"
+                    v-on:selectPiece="handleSelectPiece"
+                    v-on:unselectPiece="handleUnselectPiece"
+                ></Armors>
+            </div>
+            <div v-if="displayWeapons">
+                <FiltersWeapons
+                    :allWeapons.sync="allWeapons"
+                    v-on:filteredWeapons="filteredWeapons = $event"
+                ></FiltersWeapons>
+                <Weapons
+                    :weapons.sync="filteredWeapons"
+                    :myCurrentWeapon.sync="myCurrentWeapon"
+                    v-on:selectPiece="handleSelectWeapon"
+                    v-on:unselectPiece="handleUnselectWeapon"
+                ></Weapons>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-/*eslint no-unused-vars: "off"*/
 import Armors from "./components/Armors"
 import Weapons from "./components/Weapons"
 import FiltersArmors from "./components/FiltersArmors"
+import FiltersWeapons from "./components/FiltersWeapons"
 import ArmorSet from "./components/ArmorSet.vue"
 import PlayerChart from "./components/PlayerChart.vue"
 import * as radarFunc from "./scripts/RadarFunctions"
+import * as InstantLoad from "./scripts/dev/InstantLoad"
 import WeaponCard from "./components/WeaponCard.vue"
+
+console.log(InstantLoad.armors, InstantLoad.weapons)
 
 export default {
     name: "App",
@@ -69,28 +90,29 @@ export default {
         Weapons,
         Armors,
         FiltersArmors,
+        FiltersWeapons,
         ArmorSet,
         PlayerChart,
         WeaponCard,
     },
     data() {
         return {
-            allArmors: [],
-            allWeapons: [],
+            allArmors: InstantLoad.armors,
+            allWeapons: InstantLoad.weapons,
             displayArmors: false,
             displayWeapons: false,
             filteredArmors: [],
             filteredWeapons: [],
             myCurrentArmorSet: [],
             myCurrentWeapon: [],
-            infoChart: {}
+            infoChart: {},
         }
     },
     watch: {
-        myCurrentArmorSet(value){
-           this.infoChart= radarFunc.getInfoForAnyChart(value)
+        myCurrentArmorSet(value) {
+            this.infoChart = radarFunc.getInfoForAnyChart(value)
         },
-        
+
         allArmors(value) {
             console.log("allArmors change in ", this.$options.name, value)
         },
@@ -98,7 +120,7 @@ export default {
             console.log("allWeapons change in ", this.$options.name, value)
         },
         filteredArmors(value) {
-            console.log("filteredArmors change in ", this.$options.name)
+            console.log("filteredArmors change in ", this.$options.name, value)
         },
     },
     methods: {
@@ -130,17 +152,22 @@ export default {
         },
     },
     beforeCreate: function () {
+        /*
         let t = this
+        
+        
         fetch("https://mhw-db.com/armor")
             .then(response => response.json())
             .then(armorPieces => {
                 t.allArmors = armorPieces
             })
+        
         fetch("https://mhw-db.com/weapons")
             .then(response => response.json())
             .then(weaponPieces => {
                 t.allWeapons = weaponPieces
             })
+        */
     },
 }
 </script>
@@ -153,5 +180,10 @@ export default {
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+}
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
 }
 </style>

@@ -1,93 +1,91 @@
 <template>
-    <div>
-        <div
-            class="card"
-            @click="toggleSelect"
-            style="max-width: 13rem"
-            v-bind:class="{ 'border-dark': !isSelected, 'border-success': isSelected }"
-        >
-            <div class="col-auto">
-                <img
-                    v-if="piece.assets === null"
-                    :src="getImgEmpty(piece.type)"
-                    width="128"
-                    height="128"
-                />
-                <img
-                    v-else-if="piece.assets.imageMale"
-                    :src="piece.assets.imageMale"
-                    width="128"
-                    height="128"
-                    class=""
-                />
-                <img
-                    v-else-if="piece.assets.imageFemale"
-                    :src="piece.assets.imageFemale"
-                    width="128"
-                    height="128"
-                />
+    <div
+        class="card"
+        @click="toggleSelect"
+        style="max-width: 13rem"
+        v-bind:class="{ 'border-dark': !isSelected, 'border-success': isSelected }"
+    >
+        <div class="col-auto">
+            <img
+                v-if="piece.assets === null"
+                :src="getImgEmpty(piece.type)"
+                width="128"
+                height="128"
+            />
+            <img
+                v-else-if="piece.assets.imageMale"
+                :src="piece.assets.imageMale"
+                width="128"
+                height="128"
+                class=""
+            />
+            <img
+                v-else-if="piece.assets.imageFemale"
+                :src="piece.assets.imageFemale"
+                width="128"
+                height="128"
+            />
+        </div>
+        <p class="card-header">
+            <b>{{ piece.name }}</b>
+        </p>
+        <div class="card-body row text-left pr-0 py-1">
+            <div class="col-sm-3">
+                <span class="badge badge-primary">type</span>
             </div>
-            <p class="card-header">
-                <b>{{ piece.name }}</b>
-            </p>
-            <div class="card-body row text-left pr-0 py-1">
-                <div class="col-sm-3">
-                    <span class="badge badge-primary">type</span>
-                </div>
-                <span class="col"> {{ piece.type }}</span>
-                <div class="w-100"></div>
-                <!-- retour à la ligne -->
-                <div class="col-sm-3">
-                    <span class="badge badge-primary">rank</span>
-                </div>
-                <span class="col"> {{ piece.rank }}</span>
-                <div class="w-100"></div>
-                <!-- retour à la ligne -->
-                <div class="col-sm-4">
-                    <span class="badge badge-primary">defense</span>
-                </div>
-                <span class="col"> {{ piece.defense.base }}</span>
-                <div class="w-100"></div>
-                <!-- retour à la ligne -->
-                <div class="col-sm-3">
-                    <span class="badge badge-primary">jewels</span>
-                </div>
-                <div class="col">
-                    <div class="col row">
-                        <div class="" v-for="lvl in getListRankJewels(piece.slots)" :key="lvl.id">
-                            <img :src="getImgJewel(lvl.rank)" width="24" height="24" />
-                            <span class="pr-2"></span>
-                        </div>
+            <span class="col"> {{ piece.type }}</span>
+            <div class="w-100"></div>
+            <!-- retour à la ligne -->
+            <div class="col-sm-3">
+                <span class="badge badge-primary">rank</span>
+            </div>
+            <span class="col"> {{ piece.rank }}</span>
+            <div class="w-100"></div>
+            <!-- retour à la ligne -->
+            <div class="col-sm-4">
+                <span class="badge badge-primary">defense</span>
+            </div>
+            <span class="col"> {{ piece.defense.base }}</span>
+            <div class="w-100"></div>
+            <!-- retour à la ligne -->
+            <div class="col-sm-3">
+                <span class="badge badge-primary">jewels</span>
+            </div>
+            <div class="col">
+                <div class="col row">
+                    <div class="" v-for="lvl in getListRankJewels(piece.slots)" :key="lvl.id">
+                        <img :src="getImgJewel(lvl.rank)" width="24" height="24" />
+                        <span class="pr-2"></span>
                     </div>
                 </div>
-                <div class="w-100"></div>
-                <!-- retour à la ligne -->
-                <div class="col-sm-4">
-                    <span class="badge badge-primary">resistances</span>
-                </div>
-                <div class="w-100"></div>
-                <!-- retour à la ligne 
+            </div>
+            <div class="w-100"></div>
+            <!-- retour à la ligne -->
+            <div class="col-sm-4">
+                <span class="badge badge-primary">resistances</span>
+            </div>
+            <div class="w-100"></div>
+            <!-- retour à la ligne 
                 <div class="col-4 mx-0 px-0" v-for="[key, value] in Object.entries(piece.resistances)" :key="key">
                     <img :src="getImg(key)" width="32" height="32" />
                     <span >{{ value }}</span>
                 </div> -->
-                <!-- retour à la ligne -->
-                <div class="col">
-                    <div class="col row d-flex justify-content-between">
-                        <div v-for="[key, value] in Object.entries(piece.resistances)" :key="key">
-                            <img :src="getImg(key)" width="32" height="32" />
-                            <span class="pr-0">{{ value }}</span>
-                        </div>
+            <!-- retour à la ligne -->
+            <div class="col">
+                <div class="col row d-flex justify-content-between">
+                    <div v-for="[key, value] in Object.entries(piece.resistances)" :key="key">
+                        <img :src="getImg(key)" width="32" height="32" />
+                        <span class="pr-0">{{ value }}</span>
                     </div>
                 </div>
-                <div class="w-100"></div>
-                <!-- retour à la ligne -->
             </div>
-            <div
-                class="card-footer"
-                v-bind:class="{ 'border-dark': !isSelected, 'bg-success': isSelected }"
-            ></div>
+            <div class="w-100"></div>
+            <!-- retour à la ligne -->
         </div>
+        <div
+            class="card-footer"
+            v-bind:class="{ 'border-dark': !isSelected, 'bg-success': isSelected }"
+        ></div>
     </div>
 </template>
 

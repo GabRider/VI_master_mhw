@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <div class="pl-3 px-3">
+        <div class="px-4">
             <div v-if="displayArmors">
                 <FiltersArmors
                     :allArmors.sync="allArmors"

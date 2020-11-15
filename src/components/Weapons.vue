@@ -1,13 +1,15 @@
 <template>
-    <div class="row card-columns">
-        <WeaponCard
-            v-for="weapon in weapons"
-            v-bind:key="weapon.id"
-            :piece="weapon"
-            :myCurrentWeaponInput="myCurrentWeapon"
-            v-on:selectPiece="handleSelectPiece"
-            v-on:unselectPiece="handleUnselectPiece"
-        ></WeaponCard>
+    <div class="p-10">
+        <div class="row card-columns">
+            <WeaponCard
+                v-for="weapon in weapons"
+                v-bind:key="weapon.id"
+                :piece="weapon"
+                :myCurrentWeaponInput="myCurrentWeapon"
+                v-on:selectPiece="handleSelectPiece"
+                v-on:unselectPiece="handleUnselectPiece"
+            ></WeaponCard>
+        </div>
     </div>
 </template>
 
@@ -36,9 +38,8 @@ export default {
         WeaponCard,
     },
     data() {
-            console.log("data this.myCurrentWeapon", this.$options.name, this.myCurrentWeapon)
+        console.log("data this.myCurrentWeapon", this.$options.name, this.myCurrentWeapon)
 
-            
         return {}
     },
     watch: {

@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <img alt="Vue logo" src="./assets/logo.png" />
-        <PlayerChart :displayed="this.infoChart.elementaryDefenses" />
+        <PlayerChart :displayed="[this.infoChart.elementaryDefenses]" />
         <ArmorSet
             :myCurrentArmorSet.sync="myCurrentArmorSet"
             v-on:selectPiece="handleSelectPiece"
@@ -110,9 +110,10 @@ export default {
     },
     watch: {
         myCurrentArmorSet(value) {
+            
             this.infoChart = radarFunc.getInfoForAnyChart(value)
         },
-
+/*
         allArmors(value) {
             console.log("allArmors change in ", this.$options.name, value)
         },
@@ -122,10 +123,11 @@ export default {
         filteredArmors(value) {
             console.log("filteredArmors change in ", this.$options.name, value)
         },
+        */
     },
     methods: {
         handleSelectPiece(piece) {
-            console.log("Selected armor", piece)
+           // console.log("Selected armor", piece)
             if (!this.myCurrentArmorSet.some(a => a.id === piece.id)) {
                 let tmp = this.myCurrentArmorSet.filter(e => e.type !== piece.type)
                 tmp.push(piece)
@@ -133,17 +135,17 @@ export default {
             }
         },
         handleUnselectPiece(piece) {
-            console.log("Unselected armor", piece)
+           // console.log("Unselected armor", piece)
             if (this.myCurrentArmorSet.some(a => a.id === piece.id)) {
                 this.myCurrentArmorSet = this.myCurrentArmorSet.filter(a => a.id !== piece.id)
             }
         },
         handleSelectWeapon(piece) {
             this.myCurrentWeapon = [piece]
-            console.log("Selected Weapon", this.myCurrentWeapon)
+           // console.log("Selected Weapon", this.myCurrentWeapon)
         },
-        handleUnselectWeapon(piece) {
-            console.log("Unselected Weapon", piece)
+        handleUnselectWeapon() {
+           // console.log("Unselected Weapon", piece)
             this.myCurrentWeapon = []
         },
 

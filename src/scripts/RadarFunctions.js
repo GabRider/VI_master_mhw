@@ -17,13 +17,7 @@ function createRadarElementaryDefense( arrObject)
         }
     });
    
-    return { "labels":Object.keys(final),  "values":
-    {
-        "label": 'Elementary Defense',
-        "borderWidth": 1,
-        "backgroundColor": 'rgba(54, 162, 235, 0.2)', 
-        "data":Object.values(final)
-    }}
+    return { "labels":Object.keys(final),  "values": Object.values(final),"name": "Elementary Defense set number "}
 }
 function createRadarDefense( arrObject)
 {
@@ -44,22 +38,7 @@ function createRadarDefense( arrObject)
         }
     });
    
-    return { "labels":Object.keys(final),  "values":
-    {
-        "label": 'Defense',
-        "borderWidth": 1,
-        "backgroundColor": 'rgba(32, 212, 25, 0.2)', 
-        "data":Object.values(final)
-    },
-    "options":{
-         yaxis: {
-        max: 20,
-        
-      },
-      responsive: true,
-        maintainAspectRatio: false
-    }
-}
+    return { "labels":Object.keys(final),  "values": Object.values(final), name:"Defense set number "}
 }
 
 export function getInfoForAnyChart(arrObjs)

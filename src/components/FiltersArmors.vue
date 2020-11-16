@@ -83,13 +83,17 @@
 <script>
 /*
 Output events :
-    - filteredArmors : send the filter applied to allArmors
+    - update:filteredArmors : send the filter applied to allArmors
 */
 export default {
     name: "FiltersArmors",
     props: {
         allArmors: {
             // input
+            type: Array,
+            default: () => [], // equivalent à 'default: []'
+        },
+        filteredArmors: {
             type: Array,
             default: () => [], // equivalent à 'default: []'
         },
@@ -148,7 +152,7 @@ export default {
 
             sorted = sorted.slice(0, this.displayed)
 
-            this.$emit("filteredArmors", sorted) // send event output
+            this.$emit("update:filteredArmors", sorted) // send event output
         },
     },
     mounted() {

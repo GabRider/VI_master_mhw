@@ -1,13 +1,12 @@
 <template>
     <div id="app">
-        <img alt="Vue logo" src="./assets/logo.png" />
         <PlayerChart :displayed="[this.infoChart.elementaryDefenses]" />
         <ArmorSet
             :myCurrentArmorSet.sync="myCurrentArmorSet"
             v-on:selectPiece="handleSelectPiece"
             v-on:unselectPiece="handleUnselectPiece"
         ></ArmorSet>
-        
+
         <div>
             <div class="row card-columns">
                 <WeaponCard
@@ -21,7 +20,52 @@
             </div>
         </div>
 
-        <div class="mb-3">
+        <div class="px-3 mb-3">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a
+                        class="nav-link active"
+                        id="armors-tab"
+                        data-toggle="tab"
+                        href="#"
+                        role="tab"
+                        aria-controls="armors"
+                        aria-selected="true"
+                        >Armors</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        id="weapons-tab"
+                        data-toggle="tab"
+                        href="#"
+                        role="tab"
+                        aria-controls="weapons"
+                        aria-selected="false"
+                        >Weapons</a
+                    >
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div
+                    class="tab-pane fade show active"
+                    id="armors"
+                    role="tabpanel"
+                    aria-labelledby="armors-tab"
+                >
+                    ...
+                </div>
+                <div
+                    class="tab-pane fade"
+                    id="weapons"
+                    role="tabpanel"
+                    aria-labelledby="weapons-tab"
+                >
+                    ...
+                </div>
+            </div>
+
             <div class="form-check form-check-inline">
                 <input
                     class="form-check-input"
@@ -42,11 +86,11 @@
             </div>
         </div>
 
-        <div class="px-4">
+        <div class="px-3">
             <div v-if="displayArmors">
                 <FiltersArmors
                     :allArmors.sync="allArmors"
-                    v-on:filteredArmors="filteredArmors = $event"
+                    :filteredArmors.sync="filteredArmors"
                 ></FiltersArmors>
                 <Armors
                     :armors.sync="filteredArmors"
@@ -106,14 +150,14 @@ export default {
             myCurrentArmorSet: [],
             myCurrentWeapon: [],
             infoChart: {},
+            savedSets: [],
         }
     },
     watch: {
         myCurrentArmorSet(value) {
-            
             this.infoChart = radarFunc.getInfoForAnyChart(value)
         },
-/*
+        /*
         allArmors(value) {
             console.log("allArmors change in ", this.$options.name, value)
         },
@@ -127,7 +171,7 @@ export default {
     },
     methods: {
         handleSelectPiece(piece) {
-           // console.log("Selected armor", piece)
+            // console.log("Selected armor", piece)
             if (!this.myCurrentArmorSet.some(a => a.id === piece.id)) {
                 let tmp = this.myCurrentArmorSet.filter(e => e.type !== piece.type)
                 tmp.push(piece)
@@ -135,17 +179,17 @@ export default {
             }
         },
         handleUnselectPiece(piece) {
-           // console.log("Unselected armor", piece)
+            // console.log("Unselected armor", piece)
             if (this.myCurrentArmorSet.some(a => a.id === piece.id)) {
                 this.myCurrentArmorSet = this.myCurrentArmorSet.filter(a => a.id !== piece.id)
             }
         },
         handleSelectWeapon(piece) {
             this.myCurrentWeapon = [piece]
-           // console.log("Selected Weapon", this.myCurrentWeapon)
+            // console.log("Selected Weapon", this.myCurrentWeapon)
         },
         handleUnselectWeapon() {
-           // console.log("Unselected Weapon", piece)
+            // console.log("Unselected Weapon", piece)
             this.myCurrentWeapon = []
         },
 
@@ -181,7 +225,6 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
 }
 html,
 body {

@@ -1,6 +1,6 @@
 <template>
     <div class="p-10">
-        <div class="row card-columns">
+        <div class="row card-columns ml-2">
             <WeaponCard
                 v-for="weapon in weapons"
                 v-bind:key="weapon.id"

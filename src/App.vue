@@ -31,6 +31,7 @@
                         role="tab"
                         aria-controls="armors"
                         aria-selected="true"
+                        @click="tab = 'armors'"
                         >Armors</a
                     >
                 </li>
@@ -43,10 +44,13 @@
                         role="tab"
                         aria-controls="weapons"
                         aria-selected="false"
+                        @click="tab = 'weapons'"
                         >Weapons</a
                     >
                 </li>
             </ul>
+            <!-- 
+            These div can contain
             <div class="tab-content" id="myTabContent">
                 <div
                     class="tab-pane fade show active"
@@ -54,7 +58,7 @@
                     role="tabpanel"
                     aria-labelledby="armors-tab"
                 >
-                    ...
+                ...
                 </div>
                 <div
                     class="tab-pane fade"
@@ -62,32 +66,14 @@
                     role="tabpanel"
                     aria-labelledby="weapons-tab"
                 >
-                    ...
+                ...
                 </div>
             </div>
-
-            <div class="form-check form-check-inline">
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="display1"
-                    v-model="displayArmors"
-                />
-                <label class="form-check-label" for="display1">Display Armors</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="display2"
-                    v-model="displayWeapons"
-                />
-                <label class="form-check-label" for="display2">Display Weapons</label>
-            </div>
+            -->
         </div>
 
         <div class="px-3">
-            <div v-if="displayArmors">
+            <div v-if="tab === 'armors'">
                 <FiltersArmors
                     :allArmors.sync="allArmors"
                     :filteredArmors.sync="filteredArmors"
@@ -99,7 +85,7 @@
                     v-on:unselectPiece="handleUnselectPiece"
                 ></Armors>
             </div>
-            <div v-if="displayWeapons">
+            <div v-if="tab === 'weapons'">
                 <FiltersWeapons
                     :allWeapons.sync="allWeapons"
                     v-on:filteredWeapons="filteredWeapons = $event"
@@ -143,8 +129,7 @@ export default {
         return {
             allArmors: InstantLoad.armors,
             allWeapons: InstantLoad.weapons,
-            displayArmors: false,
-            displayWeapons: false,
+            tab: "armors",
             filteredArmors: [],
             filteredWeapons: [],
             myCurrentArmorSet: [],

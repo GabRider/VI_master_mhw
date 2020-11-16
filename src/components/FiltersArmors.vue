@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="input-group mb-3">
+    <div class="form-row">
+        <div class="input-group form-group col-sm-4">
             <input
                 type="search"
                 class="form-control"
@@ -17,7 +17,7 @@
         </div>
 
         <!-- type filter -->
-        <div class="input-group mb-3">
+        <div class="input-group form-group col-sm-4">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="selectType">Type</label>
             </div>
@@ -29,7 +29,7 @@
         </div>
 
         <!-- rank filter -->
-        <div class="input-group mb-3">
+        <div class="input-group form-group col-sm-4">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="selectType">Rank</label>
             </div>
@@ -41,7 +41,7 @@
         </div>
 
         <!-- jewels filter -->
-        <div class="input-group mb-3">
+        <div class="input-group form-group col-sm-4">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="selectType">Jewels slot</label>
             </div>
@@ -53,7 +53,7 @@
         </div>
 
         <!-- resistances filter -->
-        <div class="input-group mb-3">
+        <div class="input-group form-group col-sm-4">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="selectType">Elemental resistances</label>
             </div>
@@ -65,9 +65,9 @@
         </div>
 
         <!-- count to display -->
-        <div class="input-group mb-3">
+        <div class="input-group form-group col-sm-4">
             <div class="input-group-prepend">
-                <label class="input-group-text" for="selectType">Maximum elements displayed</label>
+                <label class="input-group-text" for="selectType">Elements displayed</label>
             </div>
             <select class="custom-select" id="selectType" v-model="displayed" @change="filter()">
                 <option v-for="t in displayed_list" :key="t" :value="t">
@@ -156,15 +156,3 @@ export default {
     },
 }
 </script>
-
-
-<style>
-p,
-label {
-    font: 1rem "Fira Sans", sans-serif;
-}
-
-input {
-    margin: 0.4rem;
-}
-</style>

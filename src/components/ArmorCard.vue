@@ -65,11 +65,6 @@
                 <span class="badge badge-primary">resistances</span>
             </div>
             <div class="w-100"></div>
-            <!-- retour à la ligne 
-                <div class="col-4 mx-0 px-0" v-for="[key, value] in Object.entries(piece.resistances)" :key="key">
-                    <img :src="getImg(key)" width="32" height="32" />
-                    <span >{{ value }}</span>
-                </div> -->
             <!-- retour à la ligne -->
             <div class="col">
                 <div class="col row d-flex justify-content-between">
@@ -108,8 +103,7 @@ defense
 */
 /*
 Output events :
-    - selectPiece : send selected armor piece object
-    - unselectPiece : send unselected armor piece object
+    - update:myCurrentArmorSet : send new value of myCurrentArmorSet
 */
 export default {
     name: "ArmorCard",
@@ -119,16 +113,13 @@ export default {
             type: Object,
             default: () => {},
         },
-        myCurrentArmorSetInput: {
+        myCurrentArmorSet: {
             // input
             type: Array,
-            default: () => [],
         },
     },
     data() {
-        return {
-            myCurrentArmorSet: this.myCurrentArmorSetInput,
-        }
+        return {}
     },
     computed: {
         isSelected() {
@@ -136,21 +127,27 @@ export default {
         },
     },
     watch: {
-        piece() {
-            // receive parent change of the piece
-            console.log("piece changed in composant", this.$options.name)
-        },
-        myCurrentArmorSetInput(newSet) {
-            this.myCurrentArmorSet = newSet
-        },
     },
     methods: {
         toggleSelect() {
             console.log("toggle Select")
-            //this.isSelected = !this.isSelected
-            // send event output
-            if (this.isSelected) this.$emit("unselectPiece", this.piece)
-            else this.$emit("selectPiece", this.piece)
+            if (this.isSelected) this.unselectPiece()
+            else this.selectPiece()
+        },
+        selectPiece() {
+            // console.log("Selected armor", this.piece)
+            if (!this.myCurrentArmorSet.some(a => a.id === this.piece.id)) {
+                let newArmorSet = this.myCurrentArmorSet.filter(e => e.type !== this.piece.type)
+                newArmorSet.push(this.piece)
+                this.$emit("update:myCurrentArmorSet", newArmorSet)
+            }
+        },
+        unselectPiece() {
+            // console.log("Unselected armor", this.piece)
+            if (this.myCurrentArmorSet.some(a => a.id === this.piece.id)) {
+                const newArmorSet = this.myCurrentArmorSet.filter(a => a.id !== this.piece.id)
+                this.$emit("update:myCurrentArmorSet", newArmorSet)
+            }
         },
         getListRankJewels(slots) {
             return slots.map((e, i) => {

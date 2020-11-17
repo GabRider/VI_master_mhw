@@ -100,8 +100,7 @@ attack
 */
 /*
 Output events :
-    - selectPiece : send selected armor piece object
-    - unselectPiece : send unselected armor piece object
+    - update:myCurrentWeapon : send new value of myCurrentWeapon
 */
 export default {
     name: "WeaponCard",
@@ -110,21 +109,13 @@ export default {
             // input
             type: Object,
         },
-        myCurrentWeaponInput: {
+        myCurrentWeapon: {
             // input
             type: Array,
         },
     },
     data() {
-        if (!this.myCurrentWeaponInput)
-            console.log(
-                "data this.myCurrentWeaponInput",
-                this.$options.name,
-                this.myCurrentWeaponInput
-            )
-        return {
-            myCurrentWeapon: this.myCurrentWeaponInput,
-        }
+        return {}
     },
     computed: {
         isSelected() {
@@ -132,21 +123,14 @@ export default {
         },
     },
     watch: {
-        piece() {
-            // receive parent change of the piece
-            console.log("piece changed in composant", this.$options.name)
-        },
-        myCurrentWeaponInput(newWeapon) {
-            this.myCurrentWeapon = newWeapon
-        },
     },
     methods: {
         toggleSelect() {
             console.log("toggle Select")
             //this.isSelected = !this.isSelected
             // send event output
-            if (this.isSelected) this.$emit("unselectPiece", this.piece)
-            else this.$emit("selectPiece", this.piece)
+            if (this.isSelected) this.$emit("update:myCurrentWeapon", [])
+            else this.$emit("update:myCurrentWeapon", [this.piece])
         },
         getListRankJewels(slots) {
             return slots.map((e, i) => {

@@ -3,60 +3,65 @@
         <div style="width:30%;height:30%">
         <PlayerChart :displayed="[this.infoChart.elementaryDefenses,this.infoChart.elementaryDefenses]" />
         </div>
-        <ArmorSet
-            :myCurrentArmorSet.sync="myCurrentArmorSet"
-            v-on:selectPiece="handleSelectPiece"
-            v-on:unselectPiece="handleUnselectPiece"
-        ></ArmorSet>
-        
+      
+        <ArmorSet :myCurrentArmorSet.sync="myCurrentArmorSet"></ArmorSet>
+
         <div>
             <div class="row card-columns">
                 <WeaponCard
                     v-for="weapon in myCurrentWeapon"
                     v-bind:key="weapon.id"
                     :piece="weapon"
-                    :myCurrentWeaponInput.sync="myCurrentWeapon"
-                    v-on:selectPiece="handleSelectWeapon"
-                    v-on:unselectPiece="handleUnselectWeapon"
+                    :myCurrentWeapon.sync="myCurrentWeapon"
                 ></WeaponCard>
             </div>
         </div>
 
-        <div class="mb-3">
-            <div class="form-check form-check-inline">
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="display1"
-                    v-model="displayArmors"
-                />
-                <label class="form-check-label" for="display1">Display Armors</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="display2"
-                    v-model="displayWeapons"
-                />
-                <label class="form-check-label" for="display2">Display Weapons</label>
-            </div>
+        <SetManager></SetManager>
+
+        <div class="px-3 mb-3">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a
+                        class="nav-link active"
+                        id="armors-tab"
+                        data-toggle="tab"
+                        href="#"
+                        role="tab"
+                        aria-controls="armors"
+                        aria-selected="true"
+                        @click="tab = 'armors'"
+                        >Armors</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        id="weapons-tab"
+                        data-toggle="tab"
+                        href="#"
+                        role="tab"
+                        aria-controls="weapons"
+                        aria-selected="false"
+                        @click="tab = 'weapons'"
+                        >Weapons</a
+                    >
+                </li>
+            </ul>
         </div>
 
-        <div class="px-4">
-            <div v-if="displayArmors">
+        <div class="px-3">
+            <div v-if="tab === 'armors'">
                 <FiltersArmors
                     :allArmors.sync="allArmors"
-                    v-on:filteredArmors="filteredArmors = $event"
+                    :filteredArmors.sync="filteredArmors"
                 ></FiltersArmors>
                 <Armors
                     :armors.sync="filteredArmors"
-                    :myCurrentArmorSet="myCurrentArmorSet"
-                    v-on:selectPiece="handleSelectPiece"
-                    v-on:unselectPiece="handleUnselectPiece"
+                    :myCurrentArmorSet.sync="myCurrentArmorSet"
                 ></Armors>
             </div>
-            <div v-if="displayWeapons">
+            <div v-if="tab === 'weapons'">
                 <FiltersWeapons
                     :allWeapons.sync="allWeapons"
                     v-on:filteredWeapons="filteredWeapons = $event"
@@ -64,8 +69,6 @@
                 <Weapons
                     :weapons.sync="filteredWeapons"
                     :myCurrentWeapon.sync="myCurrentWeapon"
-                    v-on:selectPiece="handleSelectWeapon"
-                    v-on:unselectPiece="handleUnselectWeapon"
                 ></Weapons>
             </div>
         </div>
@@ -82,6 +85,7 @@ import PlayerChart from "./components/PlayerChart.vue"
 import * as radarFunc from "./scripts/RadarFunctions"
 import * as InstantLoad from "./scripts/dev/InstantLoad"
 import WeaponCard from "./components/WeaponCard.vue"
+import SetManager from "./components/SetManager.vue"
 
 console.log(InstantLoad.armors, InstantLoad.weapons)
 
@@ -95,61 +99,27 @@ export default {
         ArmorSet,
         PlayerChart,
         WeaponCard,
+        SetManager,
     },
     data() {
         return {
             allArmors: InstantLoad.armors,
             allWeapons: InstantLoad.weapons,
-            displayArmors: false,
-            displayWeapons: false,
+            tab: "armors",
             filteredArmors: [],
             filteredWeapons: [],
             myCurrentArmorSet: [],
             myCurrentWeapon: [],
             infoChart: {},
+            savedSets: [],
         }
     },
     watch: {
         myCurrentArmorSet(value) {
-            
             this.infoChart = radarFunc.getInfoForAnyChart(value)
         },
-/*
-        allArmors(value) {
-            console.log("allArmors change in ", this.$options.name, value)
-        },
-        allWeapons(value) {
-            console.log("allWeapons change in ", this.$options.name, value)
-        },
-        filteredArmors(value) {
-            console.log("filteredArmors change in ", this.$options.name, value)
-        },
-        */
     },
     methods: {
-        handleSelectPiece(piece) {
-           // console.log("Selected armor", piece)
-            if (!this.myCurrentArmorSet.some(a => a.id === piece.id)) {
-                let tmp = this.myCurrentArmorSet.filter(e => e.type !== piece.type)
-                tmp.push(piece)
-                this.myCurrentArmorSet = tmp
-            }
-        },
-        handleUnselectPiece(piece) {
-           // console.log("Unselected armor", piece)
-            if (this.myCurrentArmorSet.some(a => a.id === piece.id)) {
-                this.myCurrentArmorSet = this.myCurrentArmorSet.filter(a => a.id !== piece.id)
-            }
-        },
-        handleSelectWeapon(piece) {
-            this.myCurrentWeapon = [piece]
-           // console.log("Selected Weapon", this.myCurrentWeapon)
-        },
-        handleUnselectWeapon() {
-           // console.log("Unselected Weapon", piece)
-            this.myCurrentWeapon = []
-        },
-
         test(e) {
             console.log("### TEST", e)
         },
@@ -182,7 +152,6 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
 }
 html,
 body {

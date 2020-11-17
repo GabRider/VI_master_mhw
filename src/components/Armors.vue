@@ -4,9 +4,8 @@
             v-for="armor in armors"
             v-bind:key="armor.id"
             :piece="armor"
-            :myCurrentArmorSetInput="myCurrentArmorSet"
-            v-on:selectPiece="handleSelectPiece"
-            v-on:unselectPiece="handleUnselectPiece"
+            :myCurrentArmorSet="myCurrentArmorSet"
+            v-on:update:myCurrentArmorSet="updateMyCurrentArmorSet"
         ></ArmorCard>
     </div>
 </template>
@@ -40,17 +39,10 @@ export default {
         return {}
     },
     watch: {
-        armors() {
-            // receive parent change of the armors list
-            console.log("armors changed in composant", this.$options.name)
-        },
     },
     methods: {
-        handleSelectPiece(event) {
-            this.$emit("selectPiece", event) // send event output
-        },
-        handleUnselectPiece(event) {
-            this.$emit("unselectPiece", event) // send event output
+        updateMyCurrentArmorSet(event) {
+            this.$emit("update:myCurrentArmorSet", event) // send event output
         },
     },
 }

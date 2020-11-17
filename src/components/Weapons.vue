@@ -5,9 +5,8 @@
                 v-for="weapon in weapons"
                 v-bind:key="weapon.id"
                 :piece="weapon"
-                :myCurrentWeaponInput="myCurrentWeapon"
-                v-on:selectPiece="handleSelectPiece"
-                v-on:unselectPiece="handleUnselectPiece"
+                :myCurrentWeapon="myCurrentWeapon"
+                v-on:update:myCurrentWeapon="updateMyCurrentWeapon"
             ></WeaponCard>
         </div>
     </div>
@@ -38,22 +37,14 @@ export default {
         WeaponCard,
     },
     data() {
-        console.log("data this.myCurrentWeapon", this.$options.name, this.myCurrentWeapon)
 
         return {}
     },
     watch: {
-        weapons() {
-            // receive parent change of the armors list
-            console.log("weapons changed in composant", this.$options.name)
-        },
     },
     methods: {
-        handleSelectPiece(event) {
-            this.$emit("selectPiece", event) // send event output
-        },
-        handleUnselectPiece(event) {
-            this.$emit("unselectPiece", event) // send event output
+        updateMyCurrentWeapon(event) {
+            this.$emit("update:myCurrentWeapon", event) // send event output
         },
     },
 }

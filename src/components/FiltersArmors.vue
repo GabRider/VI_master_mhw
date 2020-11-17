@@ -115,10 +115,6 @@ export default {
         }
     },
     watch: {
-        allArmors() {
-            // receive parent change
-            console.log("allArmors changed in composant", this.$options.name)
-        },
     },
     methods: {
         filter() {

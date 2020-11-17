@@ -154,10 +154,6 @@ export default {
         }
     },
     watch: {
-        allWeapons() {
-            // receive parent change
-            console.log("allWeapons changed in composant", this.$options.name)
-        },
     },
     methods: {
         filter() {

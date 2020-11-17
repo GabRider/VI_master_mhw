@@ -1,11 +1,7 @@
 <template>
     <div id="app">
         <PlayerChart :displayed="[this.infoChart.elementaryDefenses]" />
-        <ArmorSet
-            :myCurrentArmorSet.sync="myCurrentArmorSet"
-            v-on:selectPiece="handleSelectPiece"
-            v-on:unselectPiece="handleUnselectPiece"
-        ></ArmorSet>
+        <ArmorSet :myCurrentArmorSet.sync="myCurrentArmorSet"></ArmorSet>
 
         <div>
             <div class="row card-columns">
@@ -13,12 +9,12 @@
                     v-for="weapon in myCurrentWeapon"
                     v-bind:key="weapon.id"
                     :piece="weapon"
-                    :myCurrentWeaponInput.sync="myCurrentWeapon"
-                    v-on:selectPiece="handleSelectWeapon"
-                    v-on:unselectPiece="handleUnselectWeapon"
+                    :myCurrentWeapon.sync="myCurrentWeapon"
                 ></WeaponCard>
             </div>
         </div>
+
+        <SetManager></SetManager>
 
         <div class="px-3 mb-3">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -49,27 +45,6 @@
                     >
                 </li>
             </ul>
-            <!-- 
-            These div can contain
-            <div class="tab-content" id="myTabContent">
-                <div
-                    class="tab-pane fade show active"
-                    id="armors"
-                    role="tabpanel"
-                    aria-labelledby="armors-tab"
-                >
-                ...
-                </div>
-                <div
-                    class="tab-pane fade"
-                    id="weapons"
-                    role="tabpanel"
-                    aria-labelledby="weapons-tab"
-                >
-                ...
-                </div>
-            </div>
-            -->
         </div>
 
         <div class="px-3">
@@ -80,9 +55,7 @@
                 ></FiltersArmors>
                 <Armors
                     :armors.sync="filteredArmors"
-                    :myCurrentArmorSet="myCurrentArmorSet"
-                    v-on:selectPiece="handleSelectPiece"
-                    v-on:unselectPiece="handleUnselectPiece"
+                    :myCurrentArmorSet.sync="myCurrentArmorSet"
                 ></Armors>
             </div>
             <div v-if="tab === 'weapons'">
@@ -93,8 +66,6 @@
                 <Weapons
                     :weapons.sync="filteredWeapons"
                     :myCurrentWeapon.sync="myCurrentWeapon"
-                    v-on:selectPiece="handleSelectWeapon"
-                    v-on:unselectPiece="handleUnselectWeapon"
                 ></Weapons>
             </div>
         </div>
@@ -111,6 +82,7 @@ import PlayerChart from "./components/PlayerChart.vue"
 import * as radarFunc from "./scripts/RadarFunctions"
 import * as InstantLoad from "./scripts/dev/InstantLoad"
 import WeaponCard from "./components/WeaponCard.vue"
+import SetManager from "./components/SetManager.vue"
 
 console.log(InstantLoad.armors, InstantLoad.weapons)
 
@@ -124,6 +96,7 @@ export default {
         ArmorSet,
         PlayerChart,
         WeaponCard,
+        SetManager,
     },
     data() {
         return {
@@ -142,42 +115,8 @@ export default {
         myCurrentArmorSet(value) {
             this.infoChart = radarFunc.getInfoForAnyChart(value)
         },
-        /*
-        allArmors(value) {
-            console.log("allArmors change in ", this.$options.name, value)
-        },
-        allWeapons(value) {
-            console.log("allWeapons change in ", this.$options.name, value)
-        },
-        filteredArmors(value) {
-            console.log("filteredArmors change in ", this.$options.name, value)
-        },
-        */
     },
     methods: {
-        handleSelectPiece(piece) {
-            // console.log("Selected armor", piece)
-            if (!this.myCurrentArmorSet.some(a => a.id === piece.id)) {
-                let tmp = this.myCurrentArmorSet.filter(e => e.type !== piece.type)
-                tmp.push(piece)
-                this.myCurrentArmorSet = tmp
-            }
-        },
-        handleUnselectPiece(piece) {
-            // console.log("Unselected armor", piece)
-            if (this.myCurrentArmorSet.some(a => a.id === piece.id)) {
-                this.myCurrentArmorSet = this.myCurrentArmorSet.filter(a => a.id !== piece.id)
-            }
-        },
-        handleSelectWeapon(piece) {
-            this.myCurrentWeapon = [piece]
-            // console.log("Selected Weapon", this.myCurrentWeapon)
-        },
-        handleUnselectWeapon() {
-            // console.log("Unselected Weapon", piece)
-            this.myCurrentWeapon = []
-        },
-
         test(e) {
             console.log("### TEST", e)
         },

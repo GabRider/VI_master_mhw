@@ -1,7 +1,8 @@
 <template>
     <div id="app">
-        <img alt="Vue logo" src="./assets/logo.png" />
-        <PlayerChart :displayed="[this.infoChart.elementaryDefenses]" />
+        <div style="width:30%;height:30%">
+        <PlayerChart :displayed="[this.infoChart.elementaryDefenses,this.infoChart.elementaryDefenses]" />
+        </div>
         <ArmorSet
             :myCurrentArmorSet.sync="myCurrentArmorSet"
             v-on:selectPiece="handleSelectPiece"

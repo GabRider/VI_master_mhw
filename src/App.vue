@@ -1,10 +1,20 @@
 <template>
     <div id="app">
-        <div style="width:30%;height:30%">
-        <PlayerChart :displayed="[this.infoChart.elementaryDefenses,this.infoChart.elementaryDefenses]" />
+        <div class="px-3" style="width: 30%; height: 30%">
+            <PlayerChart
+                v-if="infosForCharts.armors.currentStats.elementaryDefenses !== undefined"
+                :inputData="infosForCharts.armors.currentStats.elementaryDefenses"
+            />
+            <!--
+            uncomment for see saved set comparaisons
+            <PlayerChart
+                v-if="infosForCharts.armors.allSetsStats.elementaryDefenses !== undefined"
+                :inputData="infosForCharts.armors.allSetsStats.elementaryDefenses"
+            />
+            -->
         </div>
-      
-        <ArmorSet :myCurrentArmorSet.sync="myCurrentArmorSet"></ArmorSet>
+
+        <ArmorSet :myCurrentArmorSet.sync="myCurrentArmorSet" id="anchorSets"></ArmorSet>
 
         <div>
             <div class="row card-columns">
@@ -17,9 +27,15 @@
             </div>
         </div>
 
-        <SetManager></SetManager>
+        <SetManager
+            :savedSets.sync="savedSets"
+            :myCurrentArmorSet.sync="myCurrentArmorSet"
+            :myCurrentWeapon.sync="myCurrentWeapon"
+            :myCurrentSetName.sync="myCurrentSetName"
+            id="anchorSetManager"
+        ></SetManager>
 
-        <div class="px-3 mb-3">
+        <div class="px-3 mb-3" id="anchorTabs">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a
@@ -108,22 +124,48 @@ export default {
             tab: "armors",
             filteredArmors: [],
             filteredWeapons: [],
+            myCurrentSetName: "nameless",
             myCurrentArmorSet: [],
             myCurrentWeapon: [],
-            infoChart: {},
             savedSets: [],
         }
     },
-    watch: {
-        myCurrentArmorSet(value) {
-            this.infoChart = radarFunc.getInfoForAnyChart(value)
+    watch: {},
+    computed: {
+        infosForCharts() {
+            /*
+            return object of type:
+                "armors": {
+                    allSetsStats: {
+                        elementaryDefenses: {
+                            title: String
+                            labels: Array<String>
+                            data: Array<Object> [
+                                {
+                                    setName: String,
+                                    values: Array<Number>
+                                }, 
+                                {...}
+                            ]
+                        },
+                        defense: {...},
+                    },
+                    currentStats: {...},
+                },
+                "weapon": {...},
+                "all": {...},
+            */
+            const info = radarFunc.getInfoForAnyChart(
+                this.myCurrentSetName,
+                this.myCurrentArmorSet,
+                this.myCurrentWeapon,
+                this.savedSets
+            )
+            console.log("info", info)
+            return info
         },
     },
-    methods: {
-        test(e) {
-            console.log("### TEST", e)
-        },
-    },
+    methods: {},
     beforeCreate: function () {
         /*
         let t = this

@@ -1,50 +1,109 @@
-function createRadarElementaryDefense( arrObject)
-{
-    const final={}
-    arrObject.forEach(obj => {
-        
-        let resistances= obj.resistances
-        if(resistances!=null)
-        {
-           
-            Object.entries(resistances).forEach(([key,value])=>{
-                if(final[key]==null)
-                     final[key]=value
-                else 
-                    final[key]+=value
+function sumSameSubAttribut(array, attribut) {
+    const final = {}
+    array.forEach(o => {
+        if (o[attribut] != null) {
+            Object.entries(o[attribut]).forEach(([key, value]) => {
+                if (final[key] == null)
+                    final[key] = value
+                else
+                    final[key] += value
             })
-            
+
         }
-    });
-   
-    return { "labels":Object.keys(final),  "values": Object.values(final),"name": "Elementary Defense set number "}
-}
-function createRadarDefense( arrObject)
-{
-    const final={}
-    arrObject.forEach(obj => {
-        
-        let defenses= obj.defense
-        if(defenses!=null)
-        {
-           
-            Object.entries(defenses).forEach(([key,value])=>{
-                if(final[key]==null)
-                     final[key]=value
-                else 
-                    final[key]+=value
-            })
-            
-        }
-    });
-   
-    return { "labels":Object.keys(final),  "values": Object.values(final), name:"Defense set number "}
+    })
+    return final
 }
 
-export function getInfoForAnyChart(arrObjs)
-{
+function sumElementaryDefense(setsOfArmors) {
+    if (setsOfArmors.length > 0 && setsOfArmors[0].armors.length > 0) {
+        const setsSum = setsOfArmors.map(set => {
+            return { "name": set.name, "final": sumSameSubAttribut(set.armors, "resistances") }
+        })
+        return {
+            "title": "Elementary defense",
+            "labels": Object.keys(setsSum[0].final),
+            "data": setsSum.map(set => { return { "setName": set.name, "values": Object.values(set.final) } })
+        }
+    }
+    else
+        return undefined
+}
+function sumDefense(setsOfArmors) {
+    if (setsOfArmors.length > 0 && setsOfArmors[0].armors.length > 0) {
+        const setsSum = setsOfArmors.map(set => {
+            return { "name": set.name, "final": sumSameSubAttribut(set.armors, "defense") }
+        })
+        return {
+            "title": "Defense",
+            "labels": Object.keys(setsSum[0].final),
+            "data": setsSum.map(set => { return { "setName": set.name, "values": Object.values(set.final) } })
+        }
+    }
+    else
+        return undefined
+}
+
+export function getInfoForAnyChart(currentName, currentArmors, currentWeapon, savedSets) {
+
+    /*
+    return
+    {
+        "armors": {
+            allSetsStats: {
+                elementaryDefenses: {
+                    title: String
+                    labels: Array<String>
+                    data: Array<Object> [
+                        {
+                            setName: String,
+                            values: Array<Number>
+                        }, 
+                        {...}
+                    ]
+                },
+                defense: {...},
+            },
+            currentStats: {...},
+        },
+        "weapon": {...},
+        "all": {...},
+    },
+    */
+    const currentSet = {
+        name: currentName,
+        armors: currentArmors,
+        weapon: currentWeapon,
+    }
+    const armors = {
+        currentStats: {
+            elementaryDefenses: sumElementaryDefense([currentSet]),
+            defense: sumDefense([currentSet])
+        },
+        allSetsStats: {
+            elementaryDefenses: sumElementaryDefense(savedSets),
+            defense: sumDefense(savedSets),
+        },
+    }
+
+    const weapon = {
+        currentStats: {},
+        allSetsStats: {}
+    }
+    
+    const all = {
+        currentStats: {
+            elementaryDefenses: armors.currentStats.elementaryDefenses,
+            defense: armors.currentStats.defense
+        },
+        allSetsStats: {
+            elementaryDefenses: armors.allSetsStats.elementaryDefenses,
+            defense: armors.allSetsStats.defense
+        }
+    }
+
     return {
-        "elementaryDefenses": createRadarElementaryDefense(arrObjs),
-        "defenses": createRadarDefense(arrObjs)
+        armors: armors,
+        weapon: weapon,
+        all: all,
     }
 }

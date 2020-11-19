@@ -1,5 +1,6 @@
 <template>
     <div class="form-row">
+        <!-- entry filter -->
         <div class="input-group form-group col-sm-4">
             <input
                 type="search"
@@ -10,7 +11,7 @@
                 v-model="name"
             />
             <div class="input-group-append">
-                <button class="btn btn-outline-success" type="button" @click="filter()">
+                <button class="btn btn-outline-primary" type="button" @click="filter()">
                     Search
                 </button>
             </div>

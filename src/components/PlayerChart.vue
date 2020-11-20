@@ -1,3 +1,6 @@
+<template>
+    <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+</template>
 <script>
 /*
 Input inputData Object format :
@@ -13,102 +16,65 @@ Input inputData Object format :
     ]
 }
 */
-import { Radar } from "vue-chartjs"
+import { Plotly } from 'vue-plotly'
 
 export default {
-    name: "PlayerChart",
-    extends: Radar,
-    props: {
-        inputData: {
-            // input
-            type: Object,
-        },
-        displayNegatif: {
-            type: Boolean,
-            default: false,
-        },
+  name: "PlayerChart",
+  components: {
+    Plotly
+  },
+  props: {
+    inputData: {
+      // input
+      type: Object,
     },
-    watch: {
-        inputData() {
-            this.display()
-        },
+    displayNegatif: {
+      type: Boolean,
+      default: false,
     },
-    data() {
-        return {
-            backgroundColorRadar: [
-                "rgba(255, 0, 0, 0.4)",
-                "rgba(0, 0, 255, 0.4)",
-                "rgba(60, 179, 113, 0.4)",
-                "rgba(255, 255, 0, 0.4)",
-                "rgba(0, 0, 0, 0.4)",
-            ],
-            chartData: {
-                labels: this.inputData.labels,
-                datasets: [],
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: this.inputData.title,
-                },
-                pointDot: false,
-                tooltips: {
-                    callbacks: {
-                        title: function (tooltipItems, data) {
-                            if (tooltipItems[0].yLabel != 0)
-                                return data.labels[tooltipItems[0].index]
-
-                            let res = ""
-
-                            Object.entries(tooltipItems).forEach(key => {
-                                if (!res.includes(data.labels[key[1].index]))
-                                    res += data.labels[key[1].index] + ", "
-                            })
-
-                            return res.slice(0, -2)
-                        },
-                    },
-                },
-                legend: {
-                    labels: {
-                        fontSize: 14,
-                    },
-                },
-                scale: {
-                    pointLabels: {
-                        fontSize: 15,
-                    },
-                    ticks: {
-                        min: 0,
-                        max: 20,
-                        stepSize: 4,
-                    },
-                },
-            },
-        }
+  },
+  watch: {
+    inputData() {
+      this.display();
     },
-    methods: {
-        display() {
-            if (this.inputData.data.length === 0) return
-
-            this.chartData.datasets = this.inputData.data.map((e, i) =>
-                this.formattingData(e.values, e.setName, this.backgroundColorRadar[i])
-            )
-            this.renderChart(this.chartData, this.options)
-        },
-        formattingData(values, label, color) {
-            return {
-                label: label,
-                borderWidth: 1,
-                fill: true,
-                backgroundColor: color,
-                data: values.map(x => (x < 0 && !this.displayNegatif ? 0 : x)),
-            }
-        },
+  },
+  data(){
+    return {
+        
+        data:[],
+    layout:{
+      polar: {
+    radialaxis: {
+      visible: true,
+      range: [0, 20]
+    }
+  },
+  showlegend: true
+    }
+    }
+  }
+  ,
+  methods:{
+      display() {
+      if (this.inputData.data.length === 0) return;
+      this.data = this.inputData.data.map((e) =>
+        this.formattingData(e.values, e.setName,this.inputData.labels)
+      );
     },
-    mounted() {
-        this.display()
+      formattingData(values, label,labels) {
+          let hoverSurface =""
+        values.forEach((x,i) => (hoverSurface+=labels[i]+" :" + (x < 0 && !this.displayNegatif ? 0 : x)+"<br>"))
+        console.log(hoverSurface);
+      return {
+        type: 'scatterpolar',
+        r: values.map((x) => (x < 0 && !this.displayNegatif ? 0 : x)),
+        theta: labels,
+        text: hoverSurface,
+        hovertemplate: 'adadasdas',
+        fill: 'toself',
+        name: label,
+      };
     },
-}
-//https://www.positronx.io/create-awesome-charts-in-vue-js-with-chart-js-and-vue-chartjs/
+  }
+}//https://www.positro   nx.io/create-awesome-charts-in-vue-js-with-chart-js-and-vue-chartjs/
 </script>

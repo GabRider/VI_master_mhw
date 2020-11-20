@@ -1,17 +1,11 @@
 <template>
     <div id="app">
-        <div class="px-3" style="width: 30%; height: 30%">
-            <PlayerChart
-                v-if="infosForCharts.armors.currentStats.elementaryDefenses !== undefined"
-                :inputData="infosForCharts.armors.currentStats.elementaryDefenses"
-            />
-            <!--
-            uncomment for see saved set comparaisons
+        <div class="px-3">
+            
             <PlayerChart
                 v-if="infosForCharts.armors.allSetsStats.elementaryDefenses !== undefined"
                 :inputData="infosForCharts.armors.allSetsStats.elementaryDefenses"
-            />
-            -->
+/>
         </div>
 
         <ArmorSet :myCurrentArmorSet.sync="myCurrentArmorSet" id="anchorSets"></ArmorSet>

@@ -1,7 +1,7 @@
 <template>
-    <div class="form-row px-3 my-3">
+    <div class="form-row px-1 my-1 w-100">
         <!-- entry Set -->
-        <div class="input-group form-group col-sm-5">
+        <div class="input-group form-group col-5">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="entrySet">Set name</label>
             </div>
@@ -23,7 +23,7 @@
         </div>
 
         <!-- select set -->
-        <div class="input-group form-group col-sm-7">
+        <div class="input-group form-group col-7">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="savedSet">Saved Sets</label>
             </div>

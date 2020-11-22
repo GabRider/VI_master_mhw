@@ -1,139 +1,147 @@
 <template>
-    <div id="app">
-        <div class="px-3" style="width: 30%; height: 30%">
-            <PlayerChart
-                v-if="infosForCharts.armors.currentStats.elementaryDefenses !== undefined"
-                :inputData="infosForCharts.armors.currentStats.elementaryDefenses"
-            />
-            <!--
-            uncomment for see saved set comparaisons
-            <PlayerChart
-                v-if="infosForCharts.armors.allSetsStats.elementaryDefenses !== undefined"
-                :inputData="infosForCharts.armors.allSetsStats.elementaryDefenses"
-            />
-            -->
-        </div>
-
-        <ArmorSet :myCurrentArmorSet.sync="myCurrentArmorSet" id="anchorSets"></ArmorSet>
-
-        <div>
-            <div class="row card-columns">
-                <WeaponCard
-                    v-for="weapon in myCurrentWeapon"
-                    v-bind:key="weapon.id"
-                    :piece="weapon"
-                    :myCurrentWeapon.sync="myCurrentWeapon"
-                ></WeaponCard>
-            </div>
-        </div>
-
+  <div id="app">
+    <div
+      id="stats"
+      class="col-lg-6 col-md-6 col-xl-6 col-sm-12 h-100 float-md-left float-lg-left float-xl-left"
+    >
+      <div class="row w-100">
         <SetManager
-            :savedSets.sync="savedSets"
-            :myCurrentArmorSet.sync="myCurrentArmorSet"
+          :savedSets.sync="savedSets"
+          :myCurrentArmorSet.sync="myCurrentArmorSet"
+          :myCurrentWeapon.sync="myCurrentWeapon"
+          :myCurrentSetName.sync="myCurrentSetName"
+          id="anchorSetManager"
+        />
+      </div>
+      <PlayerChart
+        v-if="
+          infosForCharts.armors.allSetsStats.elementaryDefenses !== undefined
+        "
+        :inputData="infosForCharts.armors.allSetsStats.elementaryDefenses"
+      />
+
+      <div class="row">
+        <ArmorSet :myCurrentArmorSet.sync="myCurrentArmorSet" id="anchorSets" />
+        <div class="row card-columns">
+          <WeaponCard
+            v-for="weapon in myCurrentWeapon"
+            v-bind:key="weapon.id"
+            :piece="weapon"
             :myCurrentWeapon.sync="myCurrentWeapon"
-            :myCurrentSetName.sync="myCurrentSetName"
-            id="anchorSetManager"
-        ></SetManager>
-
-        <div class="px-3 mb-3" id="anchorTabs">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a
-                        class="nav-link active"
-                        id="armors-tab"
-                        data-toggle="tab"
-                        href="#"
-                        role="tab"
-                        aria-controls="armors"
-                        aria-selected="true"
-                        @click="tab = 'armors'"
-                        >Armors</a
-                    >
-                </li>
-                <li class="nav-item">
-                    <a
-                        class="nav-link"
-                        id="weapons-tab"
-                        data-toggle="tab"
-                        href="#"
-                        role="tab"
-                        aria-controls="weapons"
-                        aria-selected="false"
-                        @click="tab = 'weapons'"
-                        >Weapons</a
-                    >
-                </li>
-            </ul>
+          ></WeaponCard>
         </div>
-
-        <div class="px-3">
-            <div v-if="tab === 'armors'">
-                <FiltersArmors
-                    :allArmors.sync="allArmors"
-                    :filteredArmors.sync="filteredArmors"
-                ></FiltersArmors>
-                <Armors
-                    :armors.sync="filteredArmors"
-                    :myCurrentArmorSet.sync="myCurrentArmorSet"
-                ></Armors>
-            </div>
-            <div v-if="tab === 'weapons'">
-                <FiltersWeapons
-                    :allWeapons.sync="allWeapons"
-                    v-on:filteredWeapons="filteredWeapons = $event"
-                ></FiltersWeapons>
-                <Weapons
-                    :weapons.sync="filteredWeapons"
-                    :myCurrentWeapon.sync="myCurrentWeapon"
-                ></Weapons>
-            </div>
-        </div>
+      </div>
     </div>
+
+    <div
+      id="overviewItems"
+      class="col-lg-6 col-md-6 col-xl-6 col-sm-12 h-100 float-md-left float-lg-left float-xl-left"
+    >
+      <div id="itemsFilters" class="row h-20">
+        <div class="px-3 mb-3" id="anchorTabs">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="armors-tab"
+                data-toggle="tab"
+                href="#"
+                role="tab"
+                aria-controls="armors"
+                aria-selected="true"
+                @click="tab = 'armors'"
+                >Armors</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="weapons-tab"
+                data-toggle="tab"
+                href="#"
+                role="tab"
+                aria-controls="weapons"
+                aria-selected="false"
+                @click="tab = 'weapons'"
+                >Weapons</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <FiltersArmors
+          v-if="tab === 'armors'"
+          :allArmors.sync="allArmors"
+          :filteredArmors.sync="filteredArmors"
+        />
+        <FiltersWeapons
+          v-if="tab === 'weapons'"
+          :allWeapons.sync="allWeapons"
+          v-on:filteredWeapons="filteredWeapons = $event"
+        />
+      </div>
+      <div id="itemsDisplay" class="row">
+        <Armors
+          v-if="tab === 'armors'"
+          :armors.sync="filteredArmors"
+          :myCurrentArmorSet.sync="myCurrentArmorSet"
+        />
+        <Weapons
+          v-if="tab === 'weapons'"
+          :weapons.sync="filteredWeapons"
+          :myCurrentWeapon.sync="myCurrentWeapon"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import Armors from "./components/Armors"
-import Weapons from "./components/Weapons"
-import FiltersArmors from "./components/FiltersArmors"
-import FiltersWeapons from "./components/FiltersWeapons"
-import ArmorSet from "./components/ArmorSet.vue"
-import PlayerChart from "./components/PlayerChart.vue"
-import * as radarFunc from "./scripts/RadarFunctions"
-import * as InstantLoad from "./scripts/dev/InstantLoad"
-import WeaponCard from "./components/WeaponCard.vue"
-import SetManager from "./components/SetManager.vue"
+/* eslint-disable */
+import Armors from "./components/Armors";
+import Weapons from "./components/Weapons";
+import FiltersArmors from "./components/FiltersArmors";
+import FiltersWeapons from "./components/FiltersWeapons";
+import ArmorSet from "./components/ArmorSet.vue";
+import PlayerChart from "./components/PlayerChart.vue";
+import * as radarFunc from "./scripts/RadarFunctions";
+import * as InstantLoad from "./scripts/dev/InstantLoad";
+import WeaponCard from "./components/WeaponCard.vue";
+import SetManager from "./components/SetManager.vue";
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-console.log(InstantLoad.armors, InstantLoad.weapons)
+console.log(InstantLoad.armors, InstantLoad.weapons);
 
 export default {
-    name: "App",
-    components: {
-        Weapons,
-        Armors,
-        FiltersArmors,
-        FiltersWeapons,
-        ArmorSet,
-        PlayerChart,
-        WeaponCard,
-        SetManager,
-    },
-    data() {
-        return {
-            allArmors: InstantLoad.armors,
-            allWeapons: InstantLoad.weapons,
-            tab: "armors",
-            filteredArmors: [],
-            filteredWeapons: [],
-            myCurrentSetName: "nameless",
-            myCurrentArmorSet: [],
-            myCurrentWeapon: [],
-            savedSets: [],
-        }
-    },
-    watch: {},
-    computed: {
-        infosForCharts() {
-            /*
+  name: "App",
+  components: {
+    Weapons,
+    Armors,
+    FiltersArmors,
+    FiltersWeapons,
+    ArmorSet,
+    PlayerChart,
+    WeaponCard,
+    SetManager,
+  },
+  data() {
+    return {
+      allArmors: InstantLoad.armors,
+      allWeapons: InstantLoad.weapons,
+      tab: "armors",
+      filteredArmors: [],
+      filteredWeapons: [],
+      myCurrentSetName: "nameless",
+      myCurrentArmorSet: [],
+      myCurrentWeapon: [],
+      savedSets: [],
+    };
+  },
+  watch: {},
+  computed: {
+    infosForCharts() {
+      /*
             return object of type:
                 "armors": {
                     allSetsStats: {
@@ -155,19 +163,19 @@ export default {
                 "weapon": {...},
                 "all": {...},
             */
-            const info = radarFunc.getInfoForAnyChart(
-                this.myCurrentSetName,
-                this.myCurrentArmorSet,
-                this.myCurrentWeapon,
-                this.savedSets
-            )
-            console.log("info", info)
-            return info
-        },
+      const info = radarFunc.getInfoForAnyChart(
+        this.myCurrentSetName,
+        this.myCurrentArmorSet,
+        this.myCurrentWeapon,
+        this.savedSets
+      );
+      console.log("info", info);
+      return info;
     },
-    methods: {},
-    beforeCreate: function () {
-        /*
+  },
+  methods: {},
+  beforeCreate: function () {
+    /*
         let t = this
         
         
@@ -183,21 +191,30 @@ export default {
                 t.allWeapons = weaponPieces
             })
         */
-    },
-}
+  },
+};
 </script>
 
 <style>
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-}
 html,
 body {
-    max-width: 100%;
-    overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+#app {
+  width: 100%;
+  height: 100%;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+#itemsDisplay {
+  height: 82%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

@@ -1,0 +1,15 @@
+{
+    "html.format.wrapAttributes": "auto",
+    "html.format.wrapLineLength": 120,
+    "html.format.indentInnerHtml": true,
+    "html.format.enable": true,
+    "vetur.format.defaultFormatterOptions": {
+        "prettier": {
+            "semi": false,
+            "printWidth": 100,
+            "arrowParens": "avoid"
+        }
+    },
+    "editor.tabSize": 3,
+    "vetur.format.options.tabSize": 3,
+}

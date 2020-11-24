@@ -1,5 +1,5 @@
 <template>
-   <div id="app">
+   <div id="app" class="container-fluid h-100">
       <div
          id="stats"
          class="col-lg-6 col-md-6 col-xl-6 col-sm-12 h-100 float-md-left float-lg-left float-xl-left"
@@ -27,10 +27,10 @@
 
       <div
          id="overviewItems"
-         class="col-lg-6 col-md-6 col-xl-6 col-sm-12 h-100 float-md-left float-lg-left float-xl-left"
+         class="col-lg-6 col-md-6 col-xl-6 col-sm-12 h-100 float-md-left float-lg-left float-xl-left h-100"
       >
          <div id="itemsFilters" class="row h-20">
-            <div class="px-3 mb-3">
+            <div class="px-3 mb-3 row">
                <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item">
                      <a
@@ -59,31 +59,32 @@
                      >
                   </li>
                </ul>
+               <FiltersArmors
+                  v-if="tab === 'armors'"
+                  :allArmors.sync="allArmors"
+                  :filteredArmors.sync="filteredArmors"
+               />
+               <FiltersWeapons
+                  v-if="tab === 'weapons'"
+                  :allWeapons.sync="allWeapons"
+                  v-on:filteredWeapons="filteredWeapons = $event"
+               />
             </div>
 
-            <FiltersArmors
-               v-if="tab === 'armors'"
-               :allArmors.sync="allArmors"
-               :filteredArmors.sync="filteredArmors"
-            />
-            <FiltersWeapons
-               v-if="tab === 'weapons'"
-               :allWeapons.sync="allWeapons"
-               v-on:filteredWeapons="filteredWeapons = $event"
-            />
          </div>
-         <div id="itemsDisplay" class="row">
-            <Armors
-               v-if="tab === 'armors'"
-               :armors.sync="filteredArmors"
-               :myCurrentArmorSet.sync="myCurrentArmorSet"
-            />
-            <Weapons
-               v-if="tab === 'weapons'"
-               :weapons.sync="filteredWeapons"
-               :myCurrentWeapon.sync="myCurrentWeapon"
-            />
-         </div>
+
+            <div id="itemsDisplay" class="row h-80">
+               <Armors
+                  v-if="tab === 'armors'"
+                  :armors.sync="filteredArmors"
+                  :myCurrentArmorSet.sync="myCurrentArmorSet"
+               />
+               <Weapons
+                  v-if="tab === 'weapons'"
+                  :weapons.sync="filteredWeapons"
+                  :myCurrentWeapon.sync="myCurrentWeapon"
+               />
+            </div>
       </div>
    </div>
 </template>
@@ -192,7 +193,7 @@ html,
 body {
    width: 100%;
    height: 100%;
-   overflow-x: hidden;
+
 }
 #app {
    width: 100%;
@@ -205,7 +206,7 @@ body {
 }
 
 #itemsDisplay {
-   height: 82%;
+    height:  82%;
    overflow-y: auto;
    overflow-x: hidden;
 }

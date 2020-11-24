@@ -21,7 +21,7 @@ Input inputData Object format :
 import { Plotly } from "vue-plotly"
 
 export default {
-   name: "PlayerChart",
+   name: "BarChart",
    components: {
       Plotly,
    },
@@ -47,13 +47,27 @@ export default {
       return {
          data: [],
          layout: {
-            polar: {
-               radialaxis: {
-                  visible: true,
-                  range: this.range,
-               },
-            },
             showlegend: true,
+            polar: {
+               radialaxis: {},
+            },
+            toImageButtonOptions: {
+               format: "svg", // one of png, svg, jpeg, webp
+               filename: "custom_image",
+               height: 500,
+               width: 700,
+               scale: 1, // Multiply title/legend/axis/canvas sizes by this factor
+            },
+         },
+         attr: {
+            displayModeBar: true,
+            toImageButtonOptions: {
+               format: "svg", // one of png, svg, jpeg, webp
+               filename: "custom_image",
+               height: 500,
+               width: 700,
+               scale: 1, // Multiply title/legend/axis/canvas sizes by this factor
+            },
          },
       }
    },
@@ -71,13 +85,13 @@ export default {
             (x, i) =>
                (hoverSurface += labels[i] + " :" + (x < 0 && !this.displayNegatif ? 0 : x) + "<br>")
          )
-         console.log(hoverSurface)
          return {
-            type: "scatterpolar",
-            r: values.map(x => (x < 0 && !this.displayNegatif ? 0 : x)),
+            type: "bar",
+            x: labels,
+            y: values,
             theta: labels,
             text: hoverSurface,
-            hovertemplate: "%{theta} : %{r}",
+            hovertemplate: "%{y}",
             fill: "toself",
             name: label,
          }

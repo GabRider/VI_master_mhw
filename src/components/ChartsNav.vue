@@ -17,19 +17,19 @@
          </ul>
       </div>
 
-      <PlayerChart
+      <BarChart
          v-if="isDefenseActive"
          :inputData="infosForCharts.all.allSetsStats.defense"
          :range="[0, 1000]"
       />
 
-      <PlayerChart
+      <RadarChart
          v-else-if="isElementaryActive"
          :inputData="infosForCharts.all.allSetsStats.elementaryDefenses"
          :range="[0, 20]"
       />
 
-      <PlayerChart
+      <BarChart
          v-else-if="isAttackActive"
          :inputData="infosForCharts.all.allSetsStats.attack"
          :range="[0, 1000]"
@@ -43,7 +43,9 @@
 /*
 Output events :
 */
-import PlayerChart from "./PlayerChart.vue"
+import RadarChart from "./RadarChart.vue"
+import BarChart from "./BarChart.vue"
+
 export default {
    name: "ChartsNav",
    props: {
@@ -53,7 +55,8 @@ export default {
       },
    },
    components: {
-      PlayerChart,
+      RadarChart,
+      BarChart
    },
    data() {
       return {

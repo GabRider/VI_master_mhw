@@ -13,10 +13,8 @@
                id="anchorSetManager"
             />
          </div>
-         <PlayerChart
-            v-if="infosForCharts.armors.allSetsStats.elementaryDefenses !== undefined"
-            :inputData="infosForCharts.armors.allSetsStats.elementaryDefenses"
-         />
+
+         <ChartsNav :infosForCharts="infosForCharts"></ChartsNav>
 
          <div class="row">
             <CurrentSet
@@ -32,7 +30,7 @@
          class="col-lg-6 col-md-6 col-xl-6 col-sm-12 h-100 float-md-left float-lg-left float-xl-left"
       >
          <div id="itemsFilters" class="row h-20">
-            <div class="px-3 mb-3" id="anchorTabs">
+            <div class="px-3 mb-3">
                <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item">
                      <a
@@ -97,7 +95,7 @@ import Weapons from "./components/Weapons"
 import FiltersArmors from "./components/FiltersArmors"
 import FiltersWeapons from "./components/FiltersWeapons"
 import CurrentSet from "./components/CurrentSet.vue"
-import PlayerChart from "./components/PlayerChart.vue"
+import ChartsNav from "./components/ChartsNav.vue"
 import * as radarFunc from "./scripts/RadarFunctions"
 import * as InstantLoad from "./scripts/dev/InstantLoad"
 import WeaponCard from "./components/WeaponCard.vue"
@@ -115,7 +113,7 @@ export default {
       FiltersArmors,
       FiltersWeapons,
       CurrentSet,
-      PlayerChart,
+      ChartsNav,
       WeaponCard,
       SetManager,
    },

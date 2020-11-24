@@ -14,10 +14,10 @@ function sumSameSubAttribut(array, attribut) {
    return final
 }
 
-function formattingSum(setsOfArmors, title, attribut) {
-   if (setsOfArmors.length > 0 && setsOfArmors[0].armors.length > 0) {
-      const setsSum = setsOfArmors.map(set => {
-         return { "name": set.name, "final": sumSameSubAttribut(set.armors, attribut) }
+function formattingSum(sets, setField, title, attribut) {
+   if (sets.length > 0 && sets[0].armors.length > 0) {
+      const setsSum = sets.map(set => {
+         return { "name": set.name, "final": sumSameSubAttribut(set[setField], attribut) }
       })
       return {
          "title": title,
@@ -29,11 +29,14 @@ function formattingSum(setsOfArmors, title, attribut) {
       return undefined
 }
 
-function sumElementaryDefense(setsOfArmors) {
-   return formattingSum(setsOfArmors, "Elementary defense", "resistances")
+function sumElementaryDefense(sets) {
+   return formattingSum(sets, "armors", "Elementary defense", "resistances")
 }
-function sumDefense(setsOfArmors) {
-   return formattingSum(setsOfArmors, "Defense", "defense")
+function sumDefense(sets) {
+   return formattingSum(sets, "armors", "Defense", "defense")
+}
+function sumAttack(sets) {
+   return formattingSum(sets, "weapon", "Attack", "attack")
 }
 
 export function getInfoForAnyChart(currentName, currentArmors, currentWeapon, savedSets) {
@@ -93,18 +96,24 @@ export function getInfoForAnyChart(currentName, currentArmors, currentWeapon, sa
    }
 
    const weapon = {
-      currentStats: {},
-      allSetsStats: {}
+      currentStats: {
+         attack: sumAttack([currentSet])
+      },
+      allSetsStats: {
+         attack: sumAttack(workingSets)
+      }
    }
 
    const all = {
       currentStats: {
          elementaryDefenses: armors.currentStats.elementaryDefenses,
-         defense: armors.currentStats.defense
+         defense: armors.currentStats.defense,
+         attack: weapon.currentStats.attack,
       },
       allSetsStats: {
          elementaryDefenses: armors.allSetsStats.elementaryDefenses,
-         defense: armors.allSetsStats.defense
+         defense: armors.allSetsStats.defense,
+         attack: weapon.allSetsStats.attack,
       }
    }
 

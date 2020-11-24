@@ -34,6 +34,9 @@ export default {
          type: Boolean,
          default: false,
       },
+      range: {
+         type: Array,
+      },
    },
    watch: {
       inputData() {
@@ -47,7 +50,7 @@ export default {
             polar: {
                radialaxis: {
                   visible: true,
-                  range: [0, 20],
+                  range: this.range,
                },
             },
             showlegend: true,
@@ -57,6 +60,7 @@ export default {
    methods: {
       display() {
          if (this.inputData.data.length === 0) return
+         this.layout.polar.radialaxis.range = this.range
          this.data = this.inputData.data.map(e =>
             this.formattingData(e.values, e.setName, this.inputData.labels)
          )

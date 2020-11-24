@@ -73,7 +73,7 @@ export default {
             r: values.map(x => (x < 0 && !this.displayNegatif ? 0 : x)),
             theta: labels,
             text: hoverSurface,
-            hovertemplate: "adadasdas",
+            hovertemplate: "%{theta} : %{r}",
             fill: "toself",
             name: label,
          }

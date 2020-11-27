@@ -1,12 +1,12 @@
 <template>
    <div class="row card-columns ml-2">
-      <ArmorCard2
+      <ArmorCard
          v-for="armor in armors"
          v-bind:key="armor.id"
          :piece="armor"
          :myCurrentArmorSet="myCurrentArmorSet"
          v-on:update:myCurrentArmorSet="updateMyCurrentArmorSet"
-      ></ArmorCard2>
+      ></ArmorCard>
    </div>
 </template>
 
@@ -18,7 +18,7 @@ Output events :
     - selectPiece : send selected armor piece object
     - unselectPiece : send unselected armor piece object
 */
-import ArmorCard2 from "./ArmorCard2.vue"
+import ArmorCard from "./ArmorCard.vue"
 export default {
    name: "Armors",
    props: {
@@ -33,7 +33,7 @@ export default {
       },
    },
    components: {
-      ArmorCard2,
+      ArmorCard,
    },
    data() {
       return {}

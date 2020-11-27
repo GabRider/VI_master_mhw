@@ -25,6 +25,9 @@
                      </td>
                   </tr>
                   <tr>
+                     <td colspan="2">{{ piece.name }}</td>
+                  </tr>
+                  <tr>
                      <td>
                         <img
                            class="mx-auto d-block"
@@ -83,9 +86,6 @@
                            </tr>
                         </table>
                      </td>
-                  </tr>
-                  <tr>
-                     <td colspan="2">{{ piece.name }}</td>
                   </tr>
                </table>
                <!--

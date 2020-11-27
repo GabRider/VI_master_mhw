@@ -1,83 +1,33 @@
 <template>
-   <div>
-      <div
-         class="card"
-         @click="toggleSelect"
-         style="max-width: 13rem"
-         v-bind:class="{ 'border-dark': !isSelected, 'border-success': isSelected }"
-      >
-         <div class="col-auto">
-            <img
-               v-if="piece.assets === null"
-               :src="getImg(piece.type)"
-               :alt="piece.type"
-               width="128"
-               height="128"
-            />
-            <img
-               v-else-if="piece.assets.image"
-               :src="piece.assets.image"
-               width="128"
-               height="128"
-            />
-         </div>
-         <p class="card-header">
-            <b>{{ piece.name }}</b>
-         </p>
-         <div class="card-body row text-left pr-0 py-1">
-            <div class="col-sm-3">
-               <span class="badge badge-primary">type</span>
-            </div>
-            <span class="col"> {{ piece.type }}</span>
-            <div class="w-100"></div>
-            <!-- retour à la ligne -->
-            <div class="col-sm-3">
-               <span class="badge badge-primary">rarity</span>
-            </div>
-            <span class="col"> {{ piece.rarity }}</span>
-            <div class="w-100"></div>
-            <!-- retour à la ligne -->
-            <div class="col-sm-3">
-               <span class="badge badge-primary">attack</span>
-            </div>
-            <span class="col"> {{ piece.attack.display }}</span>
-            <div class="w-100"></div>
-            <!-- retour à la ligne -->
-            <div class="col-sm-4">
-               <span class="badge badge-primary">elderseal</span>
-            </div>
-            <span class="col" v-if="piece.elderseal === null"> None</span>
-            <span class="col" v-else> {{ piece.elderseal }}</span>
-            <div class="w-100"></div>
-            <!-- retour à la ligne -->
-            <div class="col-sm-3">
-               <span class="badge badge-primary">jewels</span>
-            </div>
-            <div class="col">
-               <div class="col row">
-                  <div class="" v-for="lvl in getListRankJewels(piece.slots)" :key="lvl.id">
-                     <img :src="getImgJewel(lvl.rank)" width="24" height="24" />
-                     <span class="pr-2"></span>
-                  </div>
-               </div>
-            </div>
-            <div class="w-100"></div>
-            <!-- retour à la ligne -->
-            <div class="col-sm-4">
-               <span class="badge badge-primary">elements</span>
-            </div>
-            <div v-if="piece.elements && piece.elements.length > 0" class="ml-1">
-               <img :src="getImg(piece.elements[0].type)" width="32" height="32" />
-               <span class="pr-0">{{ piece.elements[0].damage }}</span>
-            </div>
-            <div class="w-100"></div>
-            <!-- retour à la ligne -->
-         </div>
-         <div
-            class="card-footer"
-            v-bind:class="{ 'border-dark': !isSelected, 'bg-success': isSelected }"
-         ></div>
+   <div
+      class="card"
+      @click="toggleSelect"
+      style="max-width: 16rem"
+      v-bind:class="{ 'border-dark': !isSelected, 'border-success': isSelected }"
+   >
+      <div>
+         <img
+            v-if="piece.assets === null"
+            :src="getImg(piece.type)"
+            :alt="piece.type"
+            width="100"
+            height="100"
+         />
+         <img v-else-if="piece.assets.image" :src="piece.assets.image" width="100" height="100" />
       </div>
+      <div class="card-header" style="width: 100%">
+         <b>{{ piece.name }}</b>
+      </div>
+
+      <CorpsCard
+         :piece="piece"
+         :displayOptions="['type', 'rarity', 'jewels', 'attack', 'elderseal', 'elements']"
+      />
+
+      <div
+         class="card-footer"
+         v-bind:class="{ 'border-dark': !isSelected, 'bg-success': isSelected }"
+      ></div>
    </div>
 </template>
 
@@ -102,6 +52,7 @@ attack
 Output events :
     - update:myCurrentWeapon : send new value of myCurrentWeapon
 */
+import CorpsCard from "./CorpsCard"
 export default {
    name: "WeaponCard",
    props: {
@@ -113,6 +64,9 @@ export default {
          // input
          type: Array,
       },
+   },
+   components: {
+      CorpsCard,
    },
    data() {
       return {}

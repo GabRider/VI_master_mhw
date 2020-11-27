@@ -70,21 +70,20 @@
                   v-on:filteredWeapons="filteredWeapons = $event"
                />
             </div>
-
          </div>
 
-            <div id="itemsDisplay" class="row h-80">
-               <Armors
-                  v-if="tab === 'armors'"
-                  :armors.sync="filteredArmors"
-                  :myCurrentArmorSet.sync="myCurrentArmorSet"
-               />
-               <Weapons
-                  v-if="tab === 'weapons'"
-                  :weapons.sync="filteredWeapons"
-                  :myCurrentWeapon.sync="myCurrentWeapon"
-               />
-            </div>
+         <div id="itemsDisplay" class="row h-80">
+            <Armors
+               v-if="tab === 'armors'"
+               :armors.sync="filteredArmors"
+               :myCurrentArmorSet.sync="myCurrentArmorSet"
+            />
+            <Weapons
+               v-if="tab === 'weapons'"
+               :weapons.sync="filteredWeapons"
+               :myCurrentWeapon.sync="myCurrentWeapon"
+            />
+         </div>
       </div>
    </div>
 </template>
@@ -120,9 +119,9 @@ export default {
    },
    data() {
       return {
-         allArmors: InstantLoad.armors.map( info =>{
-            info.name=info.name.replace('Alpha','α')
-            info.name=info.name.replace('Beta','β')
+         allArmors: InstantLoad.armors.map(info => {
+            info.name = info.name.replace("Alpha", "α")
+            info.name = info.name.replace("Beta", "β")
             return info
          }),
          allWeapons: InstantLoad.weapons,
@@ -173,21 +172,24 @@ export default {
    methods: {},
    beforeCreate: function () {
       /*
-        let t = this
-        
-        
-        fetch("https://mhw-db.com/armor")
-            .then(response => response.json())
-            .then(armorPieces => {
-                t.allArmors = armorPieces
+      let t = this
+
+      fetch("https://mhw-db.com/armor")
+         .then(response => response.json())
+         .then(armorPieces => {
+            t.allArmors = armorPieces.map(info => {
+               info.name = info.name.replace("Alpha", "α")
+               info.name = info.name.replace("Beta", "β")
+               return info
             })
-        
-        fetch("https://mhw-db.com/weapons")
-            .then(response => response.json())
-            .then(weaponPieces => {
-                t.allWeapons = weaponPieces
-            })
-        */
+         })
+
+      fetch("https://mhw-db.com/weapons")
+         .then(response => response.json())
+         .then(weaponPieces => {
+            t.allWeapons = weaponPieces
+         })
+      */
    },
 }
 </script>
@@ -197,7 +199,6 @@ html,
 body {
    width: 100%;
    height: 100%;
-
 }
 #app {
    width: 100%;
@@ -210,7 +211,7 @@ body {
 }
 
 #itemsDisplay {
-    height:  82%;
+   height: 82%;
    overflow-y: auto;
    overflow-x: hidden;
 }

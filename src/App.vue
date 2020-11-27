@@ -120,7 +120,11 @@ export default {
    },
    data() {
       return {
-         allArmors: InstantLoad.armors,
+         allArmors: InstantLoad.armors.map( info =>{
+            info.name=info.name.replace('Alpha','α')
+            info.name=info.name.replace('Beta','β')
+            return info
+         }),
          allWeapons: InstantLoad.weapons,
          tab: "armors",
          filteredArmors: [],

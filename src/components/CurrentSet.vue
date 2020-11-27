@@ -4,126 +4,135 @@
       <div class="row ml-2">
          <!-- Current Armor Set -->
          <div v-for="piece in myCurrentArmorSet" v-bind:key="piece.id" class="border my-1 mx-2">
-            <div v-if="detailArmor !== piece.id">
-               <p @click="deleteArmorCard(piece.id)">❌</p>
-               <img
-                  :src="getImg('icon_expand')"
-                  width="12"
-                  height="12"
-                  @click="showArmorDetails(piece.id)"
-               />
+            <div
+               v-if="detailArmor !== piece.id"
+               class=""
+               @mouseover="mouseOverId = piece.id"
+               @mouseleave="mouseOverId = '-1'"
+            >
                <!-- TODO: change by an image -->
-               <div class="w-100"></div>
-               <img
-                  v-if="piece.assets === null"
-                  :src="getImgEmpty(piece.type)"
-                  width="100"
-                  height="100"
-               />
-               <img
-                  v-else-if="piece.assets.imageMale"
-                  :src="piece.assets.imageMale"
-                  width="100"
-                  height="100"
-               />
-               <img
-                  v-else-if="piece.assets.imageFemale"
-                  :src="piece.assets.imageFemale"
-                  width="100"
-                  height="100"
-               />
-               <p>{{ piece.name }}</p>
-            </div>
+               <table>
+                  <tr>
+                     <td class="float-left">
+                        <button
+                           type="button"
+                           class="close"
+                           @click="deleteArmorCard(piece.id)"
+                           aria-label="Close"
+                        >
+                           <span aria-hidden="true">&times;</span>
+                        </button>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <img
+                           class="mx-auto d-block"
+                           v-if="piece.assets === null"
+                           :src="getImgEmpty(piece.type)"
+                           width="80"
+                           height="80"
+                        />
+                        <img
+                           class="mx-auto d-block"
+                           v-else-if="piece.assets.imageMale"
+                           :src="piece.assets.imageMale"
+                           width="80"
+                           height="80"
+                        />
+                        <img
+                           class="mx-auto d-block"
+                           v-else-if="piece.assets.imageFemale"
+                           :src="piece.assets.imageFemale"
+                           width="80"
+                           height="80"
+                        />
+                     </td>
+                     <td v-if="mouseOverId != piece.id"><b>&#62;</b></td>
+                     <td colspan="2" v-if="mouseOverId == piece.id">
+                        <table>
+                           <tr>
+                              <td>
+                                 <span class="badge badge-primary">defense:</span>
+                                 {{ piece.defense.base }}
+                              </td>
+                              <td>
+                                 <span
+                                    v-for="lvl in getListRankJewels(piece.slots)"
+                                    :key="lvl.id"
+                                    class="pr-1"
+                                 >
+                                    <img :src="getImgJewel(lvl.rank)" width="24" height="24"
+                                 /></span>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td colspan="2">
+                                 <table>
+                                    <tr>
+                                       <td
+                                          v-for="[key, value] in Object.entries(piece.resistances)"
+                                          :key="key"
+                                       >
+                                          <img :src="getImg(key)" width="32" height="32" />
+                                          <span class="pr-0">{{ value }}</span>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </td>
+                           </tr>
+                        </table>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td colspan="2">{{ piece.name }}</td>
+                  </tr>
+               </table>
+               <!--
+                  <div>
+                  <button
+                     type="button"
+                     class="close"
+                     @click="deleteArmorCard(piece.id)"
+                     aria-label="Close"
+                  >
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
 
-            <div v-else>
-
-
-
-               <div
-                  class="card border-dark"
-                  style="max-width: 16rem"
-               >
+               <div class="col-12 ">
                   <img
+                     class=" mx-auto d-block"
                      v-if="piece.assets === null"
                      :src="getImgEmpty(piece.type)"
-                     width="100"
-                     height="100"
+                     width="80"
+                     height="80"
                   />
                   <img
+                     class=" mx-auto d-block"
                      v-else-if="piece.assets.imageMale"
                      :src="piece.assets.imageMale"
-                     width="100"
-                     height="100"
-                     class=""
+                     width="80"
+                     height="80"
                   />
                   <img
+                     class=" mx-auto d-block"
                      v-else-if="piece.assets.imageFemale"
                      :src="piece.assets.imageFemale"
-                     width="100"
-                     height="100"
+                     width="80"
+                     height="80"
                   />
-                  <div class="card-header" style="height: 5rem; width: 100%">
-                     <b>{{ piece.name }}</b>
-                  </div>
-                  <table class=" " style="width: 100%; text-align: left">
-                     <tr>
-                        <td>
-                           <span class="badge badge-primary">defense:</span>
-                           {{ piece.defense.base }}
-                        </td>
-                        <td>
-                           <div v-if="piece.slots.length == 0">
-                              <span class="badge badge-primary">jewels: </span>
-                              <img src="../assets/empty.png" width="24" height="24" />
-                           </div>
-
-                           <span
-                              v-for="lvl in getListRankJewels(piece.slots)"
-                              :key="lvl.id"
-                              class="pr-1"
-                           >
-                              <img :src="getImgJewel(lvl.rank)" width="24" height="24"
-                           /></span>
-                        </td>
-                     </tr>
-                  </table>
-                  <span class="badge badge-primary">Elementary resistances</span>
-                  <table style="width: 100%">
-                     <tr>
-                        <td v-for="[key, value] in Object.entries(piece.resistances)" :key="key">
-                           <img :src="getImg(key)" width="32" height="32" />
-                           <span class="pr-0">{{ value }}</span>
-                        </td>
-                     </tr>
-                  </table>
-
-                  <div
-                     class="card-footer border-dark"
-                  ></div>
+               </div>
+                 <div class="col-12">
+                  <p>{{ piece.name }}</p>
                </div>
             </div>
-            
+            <div class=" mx-auto d-block">
+               <p>sssssssssssssss</p>
+            </div>
          </div>
-
-         <!-- Current Armor Set -->
-         <div v-for="piece in myCurrentWeapon" v-bind:key="piece.id" class="border my-1 mx-2">
-            <div v-if="!detailWeapon">
-               <p @click="deleteWeaponCard()">❌</p>
-               <!-- TODO: change by an image -->
-               <img
-                  v-if="piece.assets === null"
-                  :src="getImg(piece.type)"
-                  :alt="piece.type"
-                  width="100"
-                  height="100"
-               />
-               <img
-                  v-else-if="piece.assets.image"
-                  :src="piece.assets.image"
-                  width="100"
-                  height="100"
-               />
-               <p>{{ piece.name }}</p>
+ 
+    --->
             </div>
          </div>
       </div>
@@ -139,7 +148,6 @@ Output events :
     - update:myCurrentWeapon 
 */
 
-
 export default {
    name: "CurrentSet",
    props: {
@@ -152,10 +160,10 @@ export default {
          default: () => [],
       },
    },
-   components: {
-   },
+   components: {},
    data() {
       return {
+         mouseOverId: "-1",
          detailArmor: "-1",
          detailWeapon: false,
       }
@@ -198,3 +206,10 @@ export default {
    },
 }
 </script>
+<style>
+.currDiv,
+.currset {
+   display: block;
+   float: left;
+}
+</style>

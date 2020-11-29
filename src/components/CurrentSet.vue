@@ -8,7 +8,7 @@
                v-if="detailArmor !== piece.id"
                class=""
                @mouseover="mouseOverId = piece.id"
-               @mouseleave="mouseOverId = '-1'"
+              
             >
                <!-- TODO: change by an image -->
                <table>

@@ -1,8 +1,12 @@
 <template>
-   <div id="app" class="container-fluid h-100">
+   <div id="app" class="container-fluid h-100"         
+>
       <div
          id="stats"
-         class="col-lg-6 col-md-6 col-xl-6 col-sm-12 h-100 float-md-left float-lg-left float-xl-left"
+         class="h-md-100 h-xl-100 h-lg-100"
+         :class="{'col-lg-6 col-md-6 col-xl-6 col-sm-12 float-md-left float-lg-left float-xl-left' : !overviewIsSelected,
+         'col-12': overviewIsSelected}"
+         
       >
          <div class="row w-100">
             <SetManager
@@ -14,9 +18,9 @@
             />
          </div>
 
-         <ChartsNav :infosForCharts="infosForCharts"></ChartsNav>
+         <ChartsNav :infosForCharts="infosForCharts"  v-on:tabIsOverview="overviewIsSelected=$event"></ChartsNav>
 
-         <div class="row">
+         <div class="col-12 " v-if="!this.overviewIsSelected">
             <CurrentSet
                :myCurrentArmorSet.sync="myCurrentArmorSet"
                :myCurrentWeapon.sync="myCurrentWeapon"
@@ -27,7 +31,9 @@
 
       <div
          id="overviewItems"
+         
          class="col-lg-6 col-md-6 col-xl-6 col-sm-12 h-100 float-md-left float-lg-left float-xl-left h-100"
+         v-if="!this.overviewIsSelected"
       >
          <div id="itemsFilters" class="row h-20">
             <div class="px-3 mb-3 row">
@@ -132,6 +138,7 @@ export default {
          myCurrentArmorSet: [],
          myCurrentWeapon: [],
          savedSets: [],
+         overviewIsSelected:false,
       }
    },
    watch: {},
@@ -211,7 +218,7 @@ body {
 }
 
 #itemsDisplay {
-   height: 82%;
+   height: 80%;
    overflow-y: auto;
    overflow-x: hidden;
 }

@@ -47,9 +47,19 @@ export default {
       return {
          data: [],
          layout: {
+            title:{
+               text: 'undefined'
+            },
             showlegend: true,
             polar: {
                radialaxis: {},
+            },
+            margin: {
+               l: 50,
+               r: 50,
+               b: 50,
+               t: 50,
+               pad: 4,
             },
             toImageButtonOptions: {
                format: "svg", // one of png, svg, jpeg, webp
@@ -73,7 +83,8 @@ export default {
    },
    methods: {
       display() {
-         if (this.inputData.data.length === 0) return
+         if (this.inputData.data.length === 0) return 
+         this.layout.title.text= this.inputData.title
          this.layout.polar.radialaxis.range = this.range
          this.data = this.inputData.data.map(e =>
             this.formattingData(e.values, e.setName, this.inputData.labels)

@@ -42,6 +42,9 @@
 <script>
 /*
 Output events :
+
+attack : attack, tranchant, affinité, seau des anciens, element
+
 */
 import RadarChart from "./RadarChart.vue"
 import BarChart from "./BarChart.vue"

@@ -1,13 +1,12 @@
 <template>
-   <div class="form-row">
+   <div class="input-group">
       <!-- entry filter -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 220px; max-width: 220px">
          <input
             type="search"
             class="form-control"
             placeholder="Search"
             aria-label="Search"
-            aria-describedby="basic-addon2"
             v-model="name"
          />
          <div class="input-group-append">
@@ -16,7 +15,7 @@
       </div>
 
       <!-- type filter -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 150px; max-width: 150px">
          <div class="input-group-prepend">
             <label class="input-group-text" for="selectType">Type</label>
          </div>
@@ -28,7 +27,7 @@
       </div>
 
       <!-- rank filter -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 155px; max-width: 155px">
          <div class="input-group-prepend">
             <label class="input-group-text" for="selectType">Rank</label>
          </div>
@@ -40,7 +39,7 @@
       </div>
 
       <!-- jewels filter -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 165px; max-width: 165px">
          <div class="input-group-prepend">
             <label class="input-group-text" for="selectType">Jewels slot</label>
          </div>
@@ -52,7 +51,7 @@
       </div>
 
       <!-- resistances filter -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 280px; max-width: 280px">
          <div class="input-group-prepend">
             <label class="input-group-text" for="selectType">Elemental resistances</label>
          </div>
@@ -64,7 +63,7 @@
       </div>
 
       <!-- count to display -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 240px; max-width: 240px">
          <div class="input-group-prepend">
             <label class="input-group-text" for="selectType">Elements displayed</label>
          </div>

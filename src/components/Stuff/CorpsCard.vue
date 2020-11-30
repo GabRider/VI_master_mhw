@@ -28,7 +28,7 @@
             <td v-if="jewels">
                <div v-if="piece.slots.length == 0">
                   <span class="badge badge-primary">jewels</span>
-                  <img src="../assets/empty.png" width="24" height="24" />
+                  <img src="@/assets/empty.png" width="24" height="24" />
                </div>
 
                <span v-for="lvl in getListRankJewels(piece.slots)" :key="lvl.id" class="pr-1">
@@ -115,13 +115,13 @@ export default {
          })
       },
       getImgEmpty(name) {
-         return require("../assets/no-" + name + ".png")
+         return require("@/assets/no-" + name + ".png")
       },
       getImg(name) {
-         return require("../assets/" + name + ".png")
+         return require("@/assets/" + name + ".png")
       },
       getImgJewel(lvl) {
-         return require("../assets/joyau-" + lvl + ".png")
+         return require("@/assets/joyau-" + lvl + ".png")
       },
    },
 }

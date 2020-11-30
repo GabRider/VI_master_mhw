@@ -110,13 +110,13 @@ export default {
          })
       },
       getImgEmpty(name) {
-         return require("../assets/no-" + name + ".png")
+         return require("@/assets/no-" + name + ".png")
       },
       getImg(name) {
-         return require("../assets/" + name + ".png")
+         return require("@/assets/" + name + ".png")
       },
       getImgJewel(lvl) {
-         return require("../assets/joyau-" + lvl + ".png")
+         return require("@/assets/joyau-" + lvl + ".png")
       },
    },
 }

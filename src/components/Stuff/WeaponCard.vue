@@ -93,14 +93,14 @@ export default {
       },
       getImg(name) {
          try {
-            return require("../assets/" + name + ".png")
+            return require("@/assets/" + name + ".png")
          } catch (e) {
             console.log(name + ".png note found.")
             return ""
          }
       },
       getImgJewel(lvl) {
-         return require("../assets/joyau-" + lvl + ".png")
+         return require("@/assets/joyau-" + lvl + ".png")
       },
    },
 }

@@ -1,12 +1,12 @@
 <template>
-   <div id="app" class="container-fluid h-100"         
->
+   <div id="app" class="container-fluid h-100">
       <div
          id="stats"
          class="h-md-100 h-xl-100 h-lg-100"
-         :class="{'col-lg-6 col-md-6 col-xl-6 col-sm-12 float-md-left float-lg-left float-xl-left' : !overviewIsSelected,
-         'col-12': overviewIsSelected}"
-         
+         :class="{
+            'col-lg-6 col-md-6 col-xl-6 col-sm-12 float-md-left float-lg-left float-xl-left': !overviewIsSelected,
+            'col-12': overviewIsSelected,
+         }"
       >
          <div class="row w-100">
             <SetManager
@@ -18,9 +18,12 @@
             />
          </div>
 
-         <ChartsNav :infosForCharts="infosForCharts"  v-on:tabIsOverview="overviewIsSelected=$event"></ChartsNav>
+         <ChartsNav
+            :infosForCharts="infosForCharts"
+            v-on:tabIsOverview="overviewIsSelected = $event"
+         ></ChartsNav>
 
-         <div class="col-12 " v-if="!this.overviewIsSelected">
+         <div class="col-12" v-if="!this.overviewIsSelected">
             <CurrentSet
                :myCurrentArmorSet.sync="myCurrentArmorSet"
                :myCurrentWeapon.sync="myCurrentWeapon"
@@ -31,37 +34,24 @@
 
       <div
          id="overviewItems"
-         
          class="col-lg-6 col-md-6 col-xl-6 col-sm-12 h-100 float-md-left float-lg-left float-xl-left h-100"
          v-if="!this.overviewIsSelected"
       >
          <div id="itemsFilters" class="row h-20">
             <div class="px-3 mb-3 row">
                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                  <li class="nav-item">
-                     <a
-                        class="nav-link active"
-                        id="armors-tab"
-                        data-toggle="tab"
-                        href="#"
-                        role="tab"
-                        aria-controls="armors"
-                        aria-selected="true"
-                        @click="tab = 'armors'"
-                        >Armors</a
-                     >
-                  </li>
-                  <li class="nav-item">
+                  <li class="nav-item" v-for="t in tabList" v-bind:key="t">
                      <a
                         class="nav-link"
-                        id="weapons-tab"
+                        :id="t + '-tab'"
                         data-toggle="tab"
                         href="#"
                         role="tab"
-                        aria-controls="weapons"
-                        aria-selected="false"
-                        @click="tab = 'weapons'"
-                        >Weapons</a
+                        :aria-controls="t"
+                        :aria-selected="t === tab"
+                        :class="{ active: t === tab }"
+                        @click="tab = t"
+                        >{{ t }}</a
                      >
                   </li>
                </ul>
@@ -74,6 +64,16 @@
                   v-if="tab === 'weapons'"
                   :allWeapons.sync="allWeapons"
                   v-on:filteredWeapons="filteredWeapons = $event"
+               />
+               <FiltersSkills
+                  v-if="tab === 'skills'"
+                  :allSkills.sync="allSkills"
+                  :filteredSkills.sync="filteredSkills"
+               />
+               <FiltersCharms
+                  v-if="tab === 'charms'"
+                  :allCharms.sync="allCharms"
+                  :filteredCharms.sync="filteredCharms"
                />
             </div>
          </div>
@@ -89,6 +89,16 @@
                :weapons.sync="filteredWeapons"
                :myCurrentWeapon.sync="myCurrentWeapon"
             />
+            <Skills
+               v-if="tab === 'skills'"
+               :skills.sync="filteredSkills"
+               :myCurrentSkills.sync="myCurrentSkills"
+            />
+            <Charms
+               v-if="tab === 'charms'"
+               :charms.sync="filteredCharms"
+               :myCurrentCharm.sync="myCurrentCharm"
+            />
          </div>
       </div>
    </div>
@@ -96,16 +106,19 @@
 
 <script>
 /* eslint-disable */
-import Armors from "./components/Armors"
-import Weapons from "./components/Weapons"
-import FiltersArmors from "./components/FiltersArmors"
-import FiltersWeapons from "./components/FiltersWeapons"
-import CurrentSet from "./components/CurrentSet.vue"
-import ChartsNav from "./components/ChartsNav.vue"
+import Armors from "./components/Stuff/Armors"
+import Weapons from "./components/Stuff/Weapons"
+import Skills from "./components/Stuff/Skills"
+import Charms from "./components/Stuff/Charms"
+import CurrentSet from "./components/Stuff/CurrentSet"
+import FiltersArmors from "./components/MenusUI/FiltersArmors"
+import FiltersWeapons from "./components/MenusUI/FiltersWeapons"
+import FiltersSkills from "./components/MenusUI/FiltersSkills"
+import FiltersCharms from "./components/MenusUI/FiltersCharms"
+import SetManager from "./components/MenusUI/SetManager"
+import ChartsNav from "./components/Charts/ChartsNav"
 import * as radarFunc from "./scripts/RadarFunctions"
 import * as InstantLoad from "./scripts/dev/InstantLoad"
-import WeaponCard from "./components/WeaponCard.vue"
-import SetManager from "./components/SetManager.vue"
 import "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 
@@ -116,11 +129,14 @@ export default {
    components: {
       Weapons,
       Armors,
+      Skills,
+      Charms,
       FiltersArmors,
       FiltersWeapons,
+      FiltersSkills,
+      FiltersCharms,
       CurrentSet,
       ChartsNav,
-      WeaponCard,
       SetManager,
    },
    data() {
@@ -131,17 +147,28 @@ export default {
             return info
          }),
          allWeapons: InstantLoad.weapons,
+         allSkills: [],
+         allCharms: [],
+         tabList: ["armors", "weapons", "skills", "charms"],
          tab: "armors",
          filteredArmors: [],
          filteredWeapons: [],
+         filteredSkills: [],
+         filteredCharms: [],
          myCurrentSetName: "nameless",
          myCurrentArmorSet: [],
          myCurrentWeapon: [],
+         myCurrentSkills: [],
+         myCurrentCharm: [],
          savedSets: [],
-         overviewIsSelected:false,
+         overviewIsSelected: false,
       }
    },
-   watch: {},
+   watch: {
+      allSkills(value) {
+         console.log("allSkills", value)
+      },
+   },
    computed: {
       infosForCharts() {
          /*
@@ -178,9 +205,8 @@ export default {
    },
    methods: {},
    beforeCreate: function () {
-      /*
       let t = this
-
+      /*
       fetch("https://mhw-db.com/armor")
          .then(response => response.json())
          .then(armorPieces => {
@@ -197,6 +223,20 @@ export default {
             t.allWeapons = weaponPieces
          })
       */
+
+      fetch("https://mhw-db.com/skills")
+         .then(response => response.json())
+         .then(skills => {
+            t.allSkills = skills
+            console.log("skills", skills)
+         })
+
+      fetch("https://mhw-db.com/charms")
+         .then(response => response.json())
+         .then(charms => {
+            t.allCharms = charms
+            console.log("charms", charms)
+         })
    },
 }
 </script>

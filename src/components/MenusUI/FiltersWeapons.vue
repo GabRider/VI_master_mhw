@@ -1,12 +1,12 @@
 <template>
-   <div class="form-row">
-      <div class="input-group form-group col-sm-4">
+   <div class="input-group">
+      <!-- entry filter -->
+      <div class="input-group mr-2 my-1" style="min-width: 220px; max-width: 220px">
          <input
             type="search"
             class="form-control"
             placeholder="Search"
             aria-label="Search"
-            aria-describedby="basic-addon2"
             v-model="name"
          />
          <div class="input-group-append">
@@ -15,7 +15,7 @@
       </div>
 
       <!-- type filter -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 190px; max-width: 190px">
          <div class="input-group-prepend">
             <label class="input-group-text" for="selectType">Type</label>
          </div>
@@ -27,7 +27,7 @@
       </div>
 
       <!-- rarity filter -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 130px; max-width: 130px">
          <div class="input-group-prepend">
             <label class="input-group-text" for="selectType">Rarity</label>
          </div>
@@ -39,7 +39,7 @@
       </div>
 
       <!-- jewels filter -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 165px; max-width: 165px">
          <div class="input-group-prepend">
             <label class="input-group-text" for="selectType">Jewels slot</label>
          </div>
@@ -51,7 +51,7 @@
       </div>
 
       <!-- Elements filter -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 200px; max-width: 200px">
          <div class="input-group-prepend">
             <label class="input-group-text" for="selectType">Elements</label>
          </div>
@@ -63,7 +63,7 @@
       </div>
 
       <!-- elderseal filter -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 195px; max-width: 195px">
          <div class="input-group-prepend">
             <label class="input-group-text" for="selectType">Elderseal</label>
          </div>
@@ -75,7 +75,7 @@
       </div>
 
       <!-- count to display -->
-      <div class="input-group form-group col-sm-4">
+      <div class="input-group mr-2 my-1" style="min-width: 240px; max-width: 240px">
          <div class="input-group-prepend">
             <label class="input-group-text" for="selectType">Elements displayed</label>
          </div>

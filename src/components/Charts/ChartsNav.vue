@@ -34,10 +34,13 @@
             :inputData="infosForCharts.all.allSetsStats.attack"
             :range="[0, 1000]"
          />
+         <SkillsSelectedCards v-else-if="isSkillsActive" :skills="[]" />
+            
+         
       </div>
       <div v-if="this.active === 'Overview'">
          <div class="row">
-            <div class="col-xl-4 col-lg-4 col-md-4">
+            <div class="col-xl-4 col-lg-4 col-md-4 h-10 " style="height:10px;" >
                <BarChart :inputData="infosForCharts.all.allSetsStats.defense" :range="[0, 1000]" />
             </div>
             <div class="col-xl-4 col-lg-4 col-md-4">
@@ -47,7 +50,19 @@
                />
             </div>
             <div class="col-xl-4 col-lg-4 col-md-4"   >
+               
+                  <h3>Skills</h3>
+               <SkillsSelectedCards :skills="[]" />
+               
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4">
+               <div>
+               </div>
                <BarChart :inputData="infosForCharts.all.allSetsStats.attack" :range="[0, 1000]" />
+         
+            
             </div>
          </div>
       </div>
@@ -65,7 +80,7 @@ attack : attack, tranchant, affinité, seau des anciens, element
 */
 import RadarChart from "./RadarChart.vue"
 import BarChart from "./BarChart.vue"
-
+import SkillsSelectedCards from "../Stuff/SkillsSelectedCards.vue"
 export default {
    name: "ChartsNav",
    props: {
@@ -77,10 +92,11 @@ export default {
    components: {
       RadarChart,
       BarChart,
+      SkillsSelectedCards,
    },
    data() {
       return {
-         tabsNames: ["Overview", "Defense", "Elementary defense", "Attack"],
+         tabsNames: ["Overview", "Defense", "Elementary defense", "Attack","Skills"],
          active: "Elementary defense",
       }
    },
@@ -108,6 +124,11 @@ export default {
          const isElementInInfos = this.infosForCharts.all.allSetsStats.attack !== undefined
          const isActive = "Attack" === this.active || "Overview" === this.active
          return isActive && isElementInInfos
+      },
+      isSkillsActive() {
+  
+         const isActive = "Skills" === this.active || "Overview" === this.active
+         return isActive
       },
    },
 }

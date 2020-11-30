@@ -110,6 +110,7 @@ import Armors from "./components/Stuff/Armors"
 import Weapons from "./components/Stuff/Weapons"
 import Skills from "./components/Stuff/Skills"
 import Charms from "./components/Stuff/Charms"
+import SelectedSkills from "./components/Stuff/SkillsSelectedCards"
 import CurrentSet from "./components/Stuff/CurrentSet"
 import FiltersArmors from "./components/MenusUI/FiltersArmors"
 import FiltersWeapons from "./components/MenusUI/FiltersWeapons"
@@ -138,6 +139,7 @@ export default {
       CurrentSet,
       ChartsNav,
       SetManager,
+      SelectedSkills,
    },
    data() {
       return {

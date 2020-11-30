@@ -10,7 +10,8 @@
       </div>
 
       <div v-for="lvl in piece.ranks" v-bind:key="lvl.id" class="px-2" style="text-align: left">
-         <span class="badge badge-primary">Level {{ lvl.level }}</span>
+         <span class="badge badge-primary">{{ lvl.name }}</span>
+         <span> {{ lvl.skills[0].description }}</span>
          
       </div>
 

@@ -33,12 +33,12 @@
 <script>
 /*
 Output events :
-    - update:filteredCharms : send the filter applied to allcharms
+    - update:filteredCharms : send the filter applied to allCharms
 */
 export default {
    name: "FiltersCharms",
    props: {
-      allcharms: {
+      allCharms: {
          // input
          type: Array,
          default: () => [], // equivalent à 'default: []'
@@ -59,11 +59,12 @@ export default {
    watch: {},
    methods: {
       filter() {
+         console.log("this.allCharms:", this.allCharms)
          this.name = this.name.toLowerCase()
          const predicate = e => {
             return this.name === "" ? true : e.name.toLowerCase().includes(this.name)
          }
-         const filteredArmors = this.allcharms.filter(predicate)
+         const filteredArmors = this.allCharms.filter(predicate)
          this.tri(filteredArmors)
       },
       tri(filtred) {

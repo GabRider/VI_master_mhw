@@ -80,7 +80,7 @@ function sumSkills(sets, allSkills, setField) {
                   while (cpt < allSkills.length) {
                      if (allSkills[cpt].id === s.id) {
                         const skill = allSkills[cpt]
-                        if (skill.ranks.length < s.level) skill.max = s.level
+                        if (skill.ranks.length > s.level) skill.max = s.level
                         else skill.max = skill.ranks.length
                         return skill
                      }

@@ -4,7 +4,13 @@
       @click="toggleSelect"
       style="max-width: 16rem"
       v-bind:class="{ 'border-dark': !isSelected, 'border-success': isSelected }"
+       @mouseover="displaySkill=true"
+       @mouseleave="displaySkill=false"
    >
+   <div
+         class="card-footer"
+         v-bind:class="{ 'border-dark': !isSelected, 'bg-success': isSelected }"
+      ></div>
       <img v-if="piece.assets === null" :src="getImgEmpty(piece.type)" width="100" height="100" />
       <img
          v-else-if="piece.assets.imageMale"
@@ -22,16 +28,16 @@
       <div class="card-header" style="width: 100%">
          <b>{{ piece.name }}</b>
       </div>
-      
+      <div v-if="displaySkill===false">
       <CorpsCard
          :piece="piece"
          :displayOptions="['type', 'rank', 'jewels', 'defense', 'resistances']"
       />
-
-      <div
-         class="card-footer"
-         v-bind:class="{ 'border-dark': !isSelected, 'bg-success': isSelected }"
-      ></div>
+      </div>
+      <div v-if="displaySkill" >
+      <SkillArmor :skills="piece.skills" />
+      </div>
+      
    </div>
 </template>
 
@@ -57,6 +63,7 @@ Output events :
     - update:myCurrentArmorSet : send new value of myCurrentArmorSet
 */
 import CorpsCard from "./CorpsCard"
+import SkillArmor from "./SkillArmor"
 export default {
    name: "ArmorCard",
    props: {
@@ -72,9 +79,12 @@ export default {
    },
    components: {
       CorpsCard,
+      SkillArmor
    },
    data() {
-      return {}
+      return {
+         displaySkill:false,
+      }
    },
    computed: {
       isSelected() {

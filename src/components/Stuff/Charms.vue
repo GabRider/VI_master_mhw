@@ -4,8 +4,8 @@
          v-for="charm in charms"
          v-bind:key="charm.id"
          :piece="charm"
-         :myCurrentCharms="myCurrentCharms"
-         v-on:update:myCurrentCharms="updateMyCurrentCharms"
+         :myCurrentCharm="myCurrentCharm"
+         v-on:update:myCurrentCharm="updateMyCurrentCharm"
       ></CharmCard>
    </div>
 </template>
@@ -27,7 +27,7 @@ export default {
          type: Array,
          default: () => [], // equivalent à 'default: []'
       },
-      myCurrentCharms: {
+      myCurrentCharm: {
          type: Array,
          default: () => [],
       },
@@ -40,8 +40,8 @@ export default {
    },
    watch: {},
    methods: {
-      updateMyCurrentCharms(event) {
-         this.$emit("update:myCurrentCharms", event) // send event output
+      updateMyCurrentCharm(event) {
+         this.$emit("update:myCurrentCharm", event) // send event output
       },
    },
 }

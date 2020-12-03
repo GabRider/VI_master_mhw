@@ -43,7 +43,7 @@ export default {
          type: Object,
          default: () => {},
       },
-      myCurrentCharms: {
+      myCurrentCharm: {
          // input
          type: Array,
       },
@@ -54,30 +54,15 @@ export default {
    },
    computed: {
       isSelected() {
-         return this.myCurrentCharms.some(e => e.id === this.piece.id)
+         return this.myCurrentCharm.some(e => e.id === this.piece.id)
       },
    },
    watch: {},
    methods: {
       toggleSelect() {
          console.log("toggle Select")
-         if (this.isSelected) this.unselectPiece()
-         else this.selectPiece()
-      },
-      selectPiece() {
-         // console.log("Selected armor", this.piece)
-         if (!this.myCurrentCharms.some(a => a.id === this.piece.id)) {
-            let newArmorSet = this.myCurrentCharms.filter(e => e.type !== this.piece.type)
-            newArmorSet.push(this.piece)
-            this.$emit("update:myCurrentCharms", newArmorSet)
-         }
-      },
-      unselectPiece() {
-         // console.log("Unselected armor", this.piece)
-         if (this.myCurrentCharms.some(a => a.id === this.piece.id)) {
-            const newArmorSet = this.myCurrentCharms.filter(a => a.id !== this.piece.id)
-            this.$emit("update:myCurrentCharms", newArmorSet)
-         }
+         if (this.isSelected) this.$emit("update:myCurrentCharm", [])
+         else this.$emit("update:myCurrentCharm", [this.piece])
       },
    },
 }

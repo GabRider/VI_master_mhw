@@ -70,14 +70,20 @@ export default {
       savedSets: {
          type: Array,
       },
+      myCurrentSetName: {
+         type: String,
+      },
       myCurrentArmorSet: {
          type: Array,
       },
       myCurrentWeapon: {
          type: Array,
       },
-      myCurrentSetName: {
-         type: String,
+      myCurrentSkills: {
+         type: Array,
+      },
+      myCurrentCharm: {
+         type: Array,
       },
    },
    data() {
@@ -99,6 +105,8 @@ export default {
                name: this.setName,
                armors: this.myCurrentArmorSet,
                weapon: this.myCurrentWeapon,
+               skills: this.myCurrentSkills,
+               charm: this.myCurrentCharm,
             }
             this.savedSets.push(newSet)
             this.setNameSelected = this.setName
@@ -115,9 +123,11 @@ export default {
             console.log("TODO : warning set not found (app logic error).")
          } else {
             this.setName = set.name
+            this.$emit("update:myCurrentSetName", this.setNameSelected)
             this.$emit("update:myCurrentArmorSet", set.armors)
             this.$emit("update:myCurrentWeapon", set.weapon)
-            this.$emit("update:myCurrentSetName", this.setNameSelected)
+            this.$emit("update:myCurrentSkills", set.skills)
+            this.$emit("update:myCurrentCharm", set.charm)
          }
       },
       updateSet() {
@@ -135,6 +145,8 @@ export default {
             name: this.setName,
             armors: this.myCurrentArmorSet,
             weapon: this.myCurrentWeapon,
+            skills: this.myCurrentSkills,
+            charm: this.myCurrentCharm,
          }
          newSets.push(newSet)
          this.setNameSelected = this.setName
@@ -152,9 +164,11 @@ export default {
          this.setNameSelected = ""
          this.setName = ""
          this.$emit("update:savedSets", newSets)
+         this.$emit("update:myCurrentSetName", "nameless")
          this.$emit("update:myCurrentArmorSet", [])
          this.$emit("update:myCurrentWeapon", [])
-         this.$emit("update:myCurrentSetName", "nameless")
+         this.$emit("update:myCurrentSkills", [])
+         this.$emit("update:myCurrentCharm", [])
 
          window.location.href = "#anchorSetManager"
       },

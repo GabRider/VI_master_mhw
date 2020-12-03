@@ -11,9 +11,11 @@
          <div class="row w-100">
             <SetManager
                :savedSets.sync="savedSets"
+               :myCurrentSetName.sync="myCurrentSetName"
                :myCurrentArmorSet.sync="myCurrentArmorSet"
                :myCurrentWeapon.sync="myCurrentWeapon"
-               :myCurrentSetName.sync="myCurrentSetName"
+               :myCurrentSkills.sync="myCurrentSkills"
+               :myCurrentCharm.sync="myCurrentCharm"
                id="anchorSetManager"
             />
          </div>
@@ -27,7 +29,6 @@
             <CurrentSet
                :myCurrentArmorSet.sync="myCurrentArmorSet"
                :myCurrentWeapon.sync="myCurrentWeapon"
-               id="anchorSets"
             />
          </div>
       </div>
@@ -199,7 +200,10 @@ export default {
             this.myCurrentSetName,
             this.myCurrentArmorSet,
             this.myCurrentWeapon,
-            this.savedSets
+            this.myCurrentSkills,
+            this.myCurrentCharm,
+            this.savedSets,
+            this.allSkills
          )
          console.log("info", info)
          return info

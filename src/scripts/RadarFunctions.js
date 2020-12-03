@@ -62,46 +62,63 @@ function sumSlots(sets, setField) {
       return undefined
 }
 function sumSkills(sets, allSkills, setField) {
-   if (sets.length > 0 && sets[0][setField].length > 0) {
-      const setsSkills = sets.map(set => {
+
+   let setsSkills = undefined
+   function predicatGetSkillInfo(PartialSkill) {
+      let cpt = PartialSkill.id - 5 // optimisation de recherche temps constant O(1 à 5)
+      if (cpt < 0) cpt = 0
+      while (cpt < allSkills.length) {
+         if (allSkills[cpt].id === PartialSkill.id) {
+            const skill = allSkills[cpt]
+            if (skill.ranks.length > PartialSkill.level) skill.max = PartialSkill.level
+            else skill.max = skill.ranks.length
+            return skill
+         }
+         cpt = cpt + 1
+      }
+      console.log("Optimisation Recherche Skill échoué")
+      const skill = allSkills.find(s2 => s2.id === PartialSkill.id)
+      if (skill.ranks.length > PartialSkill.level) skill.max = PartialSkill.level
+      else skill.max = skill.ranks.length
+      return skill
+   }
+
+   if (sets.length > 0 && setField === "armors" && sets[0][setField].length > 0) {
+      const setsSkills2 = sets.map(set => {
          return {
             "setName": set.name,
             "values": set[setField]
-               .flatMap(e => e.skills)
+               .flatMap(e => e.skills) // skills === [skill,...]
                .reduce((acc, skill, i) => {
                   const skillInAcc = acc.find(s => s.skill === skill.skill)
                   if (skillInAcc) skillInAcc.level += skill.level
                   else acc.push({ "id": skill.skill, "level": skill.level })
                   return acc
                }, [])
-               .map(s => {
-                  let cpt = s.id - 5 // optimisation de recherche
-                  if (cpt < 0) cpt = 0
-                  while (cpt < allSkills.length) {
-                     if (allSkills[cpt].id === s.id) {
-                        const skill = allSkills[cpt]
-                        if (skill.ranks.length > s.level) skill.max = s.level
-                        else skill.max = skill.ranks.length
-                        return skill
-                     }
-                     cpt = cpt + 1
-                  }
-                  console.log("Optimisation Recherche Skill échoué")
-                  const skill = allSkills.find(s2 => s2.id === s.id)
-                  skill.max = s.level
-                  return skill
-               })
+               .map(predicatGetSkillInfo)
          }
       })
-
-      return {
-         "title": "Skills",
-         "labels": Array.from(new Set(setsSkills.flatMap(set => set.values.map(s => s.name)))),
-         "data": setsSkills
-      }
+      setsSkills = setsSkills2
+   }
+   else if (sets.length > 0 && setField === "charm" && sets[0][setField].length > 0) {
+      const setsSkills2 = sets.map(set => {
+         return {
+            "setName": set.name,
+            "values": set[setField]
+               .flatMap(e => e.ranks[e.ranks.length - 1].skills) // get max level of charm
+               .map(predicatGetSkillInfo)
+         }
+      })
+      setsSkills = setsSkills2
    }
    else
       return undefined
+
+   return {
+      "title": "Skills",
+      "labels": Array.from(new Set(setsSkills.flatMap(set => set.values.map(s => s.name)))),
+      "data": setsSkills
+   }
 }
 function getWeaponAffinity(sets) {
    if (sets.length > 0 && sets[0].weapon.length > 0) {
@@ -170,7 +187,7 @@ export function getInfoForAnyChart(
                data: Array<Object> [
                   {
                      setName: String,
-                     values: Array<Number>
+                     values: Array<>
                   }, 
                   {...}
                ]
@@ -224,10 +241,17 @@ export function getInfoForAnyChart(
       }
    }
 
-   const slots = sumSlots(workingSets, "armors")
+   const slotsA = sumSlots(workingSets, "armors")
+   const slotsW = sumSlots(workingSets, "weapon")
    const tranchant = getWeaponTranchant(workingSets)
    const affinity = getWeaponAffinity(workingSets)
-   const skills = sumSkills(workingSets, allSkills, "armors")
+   const skillsA = sumSkills(workingSets, allSkills, "armors")
+   const skillsS = sumSkills(workingSets, allSkills, "skills")
+   const skillsC = sumSkills(workingSets, allSkills, "charm")
+
+   const slots = slotsA
+   const skills = skillsA
+
 
    const all = {
       currentStats: {

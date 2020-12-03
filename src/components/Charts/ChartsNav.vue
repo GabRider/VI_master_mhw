@@ -118,6 +118,8 @@ export default {
    watch: {
       active(v) {
          this.$emit("tabIsOverview", v === "Overview")
+         if (v === "Overview") 
+            this.tab = this.infosForCharts.all.allSetsStats.skills.data[0]
       },
    },
    methods: {},

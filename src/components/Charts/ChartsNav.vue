@@ -34,7 +34,7 @@
             :inputData="infosForCharts.all.allSetsStats.attack"
             :range="[0, 1000]"
          />
-         <SkillsSelectedCards v-else-if="isSkillsActive" :skills="[]" />
+         <SkillsSelectedCards v-else-if="isSkillsActive" :skills="infosForCharts.all.currentStats.skills.data[0].values" />
       </div>
       <div v-if="this.active === 'Overview'">
          <div class="row">

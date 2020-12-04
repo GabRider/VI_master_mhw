@@ -166,6 +166,31 @@ function getWeaponTranchant(sets) {
    else
       return undefined
 }
+
+function mergeSetsSlots(sets1_in_out, sets2) {
+   // modifie l'objet sets1_in_out
+   if (sets1_in_out === undefined)
+      return sets2
+   if (sets2 === undefined)
+      return sets1_in_out
+
+   sets1_in_out.data.forEach(set1 => sets2.data.forEach(set2 => {
+      if (set1.setName === set2.setName) {
+         let i = 0
+         while (i < set1.values.length) {
+            set1.values[i] += set2.values[i]
+            i++
+         }
+      }
+   }))
+}
+
+
+
+/*
+      ####################### EXPORT ##################################
+*/
+
 export function getInfoForAnyChart(
    currentName,
    currentArmors,
@@ -246,7 +271,6 @@ export function getInfoForAnyChart(
    const tranchant = getWeaponTranchant(workingSets)
    const affinity = getWeaponAffinity(workingSets)
    const skillsA = sumSkills(workingSets, allSkills, "armors")
-   const skillsS = sumSkills(workingSets, allSkills, "skills")
    const skillsC = sumSkills(workingSets, allSkills, "charm")
 
    const slots = slotsA
@@ -258,6 +282,10 @@ export function getInfoForAnyChart(
          elementaryDefenses: armors.currentStats.elementaryDefenses,
          defense: armors.currentStats.defense,
          attack: weapon.currentStats.attack,
+         tranchant: getWeaponTranchant([currentSet]),
+         affinity: getWeaponAffinity([currentSet]),
+         skills: sumSkills([currentSet], allSkills, "armors"),
+         slots: sumSlots([currentSet], "armors"),
       },
       allSetsStats: {
          elementaryDefenses: armors.allSetsStats.elementaryDefenses,

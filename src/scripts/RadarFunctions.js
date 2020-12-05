@@ -78,7 +78,8 @@ function sumSkills(sets, allSkills, setField) {
       if (cpt < 0) cpt = 0
       while (cpt < allSkills.length) {
          if (allSkills[cpt].id === PartialSkill.id) {
-            const skill = allSkills[cpt]
+            const skillO = allSkills[cpt]
+            const skill = { ...skillO } // copie clone de la 1ere couche
             if (skill.ranks.length > PartialSkill.level) skill.max = PartialSkill.level
             else skill.max = skill.ranks.length
             return skill
@@ -97,7 +98,7 @@ function sumSkills(sets, allSkills, setField) {
          return {
             "setName": set.name,
             "values": set[setField]
-               .flatMap(e => e.skills) // skills === [skill,...]
+               .flatMap(e => e.skills) // [skills, ...] => [skill,...]
                .reduce((acc, skill, i) => {
                   const skillInAcc = acc.find(s => s.id === skill.skill)
                   if (skillInAcc) skillInAcc.level += skill.level
@@ -291,7 +292,25 @@ function calcElementary(setsElementary, setsSkills) {
 }
 
 function calcDefense(setsDefense, setsSkills) {
+   if (setsDefense === undefined) return
+   if (setsSkills === undefined) return
 
+   let i = 0
+   while (i < setsDefense.data.length) {
+      if (setsSkills.data[i].setName == "DSK") console.log("DSK", i, setsSkills.data[i])
+      if (setsSkills.data[i].setName == "completeSet1") console.log("completeSet1", i, setsSkills.data[i])
+      const avant = setsDefense.data[i].values
+      const value = setsSkills.data[i].values.reduce(((value, skill) =>
+         skill.ranks[skill.max - 1].modifiers.defense ? value + skill.ranks[skill.max - 1].modifiers.defense : value
+      ), 0)
+      setsDefense.data[i].values = setsDefense.data[i].values.map(v => v + value)
+      const apres = setsDefense.data[i].values
+      if (value != 0) {
+         console.log("avant", setsDefense.data[i].setName, value)
+         console.log("après", setsDefense.data[i].setName, value)
+      }
+      i++
+   }
 }
 
 
@@ -391,9 +410,11 @@ export function getInfoForAnyChart(
    calcTranchant(tranchant, skills)
    calcAffinity(affinity, skills)
    calcAttack(attack, skills)
+   calcDefense(defense, skills)
    calcTranchant(currTranchant, currSkill)
    calcAffinity(currAffinity, currSkill)
    calcAttack(currAttack, currSkill)
+   calcDefense(currDefense, currSkill)
 
 
    const all = {

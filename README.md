@@ -1,4 +1,4 @@
-# v2
+# Rapport VI
 
 ## Project setup
 ```
@@ -15,10 +15,6 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Points d'améliorations
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- éviter de changer la couleur des graphiques lors d'une update.

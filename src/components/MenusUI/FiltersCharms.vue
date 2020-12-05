@@ -59,7 +59,6 @@ export default {
    watch: {},
    methods: {
       filter() {
-         console.log("this.allCharms:", this.allCharms)
          this.name = this.name.toLowerCase()
          const predicate = e => {
             return this.name === "" ? true : e.name.toLowerCase().includes(this.name)

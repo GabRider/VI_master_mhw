@@ -28,19 +28,19 @@
          :displayOptions="['type', 'rarity', 'jewels', 'attack', 'elderseal', 'elements']"
       />
        <div class="progress" style="max-width: 100%; min-width: 100px;"> 
-                       <div class=" progress-bar"  :style="{width: Math.round(piece.durability[0].red / Object.keys(piece.durability[0]).length)  +'%','background-color':'red'}"></div>
+                       <div class=" progress-bar"  :style="{width: Math.round(piece.durability[0].red / Object.keys(piece.durability[0]).length)  +'%','background-color':'#CC0000'}"></div>
                        
-                       <div class="progress-bar" :style="{width:  Math.round(piece.durability[0].orange/Object.keys(piece.durability[0]).length)+'%','background-color':'orange'}"></div>
+                       <div class="progress-bar" :style="{width:  Math.round(piece.durability[0].orange/Object.keys(piece.durability[0]).length)+'%','background-color':'#FF8800'}"></div>
                        
-                       <div class="progress-bar" :style="{width:  Math.round(piece.durability[0].yellow/Object.keys(piece.durability[0]).length)+'%','background-color':'yellow'}"></div>
+                       <div class="progress-bar" :style="{width:  Math.round(piece.durability[0].yellow/Object.keys(piece.durability[0]).length)+'%','background-color':'#FFBB33'}"></div>
                        
-                       <div class="progress-bar" :style="{width: Math.round(piece.durability[0].green/Object.keys(piece.durability[0]).length)+'%','background-color':'green'}"></div>
+                       <div class="progress-bar" :style="{width: Math.round(piece.durability[0].green/Object.keys(piece.durability[0]).length)+'%','background-color':'#00C851'}"></div>
                        
-                       <div class="progress-bar" :style="{width:  Math.round(piece.durability[0].blue/Object.keys(piece.durability[0]).length)+'%','background-color':'blue'}"></div>
+                       <div class="progress-bar" :style="{width:  Math.round(piece.durability[0].blue/Object.keys(piece.durability[0]).length)+'%','background-color':'#0d47a1'}"></div>
                        
                        <div class="progress-bar" :style="{width:  Math.round(piece.durability[0].white/Object.keys(piece.durability[0]).length)+'%','background-color':'white'}"></div>
                        
-                       <div class="progress-bar" :style="{width:  Math.round(piece.durability[0].purple/Object.keys(piece.durability[0]).length)+'%','background-color':'purple'}"></div>
+                       <div class="progress-bar" :style="{width:  Math.round(piece.durability[0].purple/Object.keys(piece.durability[0]).length)+'%','background-color':'#9933CC'}"></div>
                         </div>
 
    

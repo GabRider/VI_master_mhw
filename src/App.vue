@@ -106,7 +106,7 @@
 </template>
 
 <script>
-/* eslint-disable */
+/* eslint-disable vue/no-unused-components */
 import Armors from "./components/Stuff/Armors"
 import Weapons from "./components/Stuff/Weapons"
 import Skills from "./components/Stuff/Skills"
@@ -221,12 +221,14 @@ export default {
                info.name = info.name.replace("Beta", "β")
                return info
             })
+            console.log("allArmors", t.allArmors)
          })
 
       fetch("https://mhw-db.com/weapons")
          .then(response => response.json())
          .then(weaponPieces => {
             t.allWeapons = weaponPieces
+            console.log("weaponPieces", weaponPieces)
          })
       */
 

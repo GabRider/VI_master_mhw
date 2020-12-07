@@ -223,6 +223,7 @@ export default {
             })
             console.log("allArmors", t.allArmors)
          })
+      */
 
       fetch("https://mhw-db.com/weapons")
          .then(response => response.json())
@@ -230,7 +231,6 @@ export default {
             t.allWeapons = weaponPieces
             console.log("weaponPieces", weaponPieces)
          })
-      */
 
       fetch("https://mhw-db.com/skills")
          .then(response => response.json())

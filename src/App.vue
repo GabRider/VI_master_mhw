@@ -9,7 +9,7 @@
          }"
       >
          <div class="row w-100">
-            <SetManager
+            <SetManager  v-if="!this.overviewIsSelected"
                :savedSets.sync="savedSets"
                :myCurrentSetName.sync="myCurrentSetName"
                :myCurrentArmorSet.sync="myCurrentArmorSet"
@@ -35,11 +35,12 @@
 
       <div
          id="overviewItems"
-         class="col-lg-6 col-md-6 col-xl-6 col-sm-12 h-100 float-md-left float-lg-left float-xl-left h-100"
+         class="border-dark col-lg-6  col-md-6  col-xl-6 col-sm-12 h-100 float-md-left float-lg-left float-xl-left h-100 border-left"
+         style="border-width: 4px !important"
          v-if="!this.overviewIsSelected"
       >
-         <div id="itemsFilters" class="row h-20">
-            <div class="px-3 mb-3 row">
+         <div id="itemsFilters" class="row h-20 ">
+            <div class="px-4 mb-3 row">
                <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item" v-for="t in tabList" v-bind:key="t">
                      <a
@@ -263,6 +264,10 @@ body {
    -moz-osx-font-smoothing: grayscale;
    text-align: center;
    color: #2c3e50;
+}
+#stats
+{
+   background-color: blsue;
 }
 
 #itemsDisplay {

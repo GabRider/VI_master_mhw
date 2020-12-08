@@ -3,7 +3,7 @@
       class="card"
       @click="toggleSelect"
       style="max-width: 16rem"
-      v-bind:class="{ 'border-dark': !isSelected, 'border-success': isSelected }"
+      v-bind:class="{ 'border-dark': !isSelected&& !displaySkill, 'border-success': isSelected,'border-primary':displaySkill }"
        @mouseover="displaySkill=true"
        @mouseleave="displaySkill=false"
    >

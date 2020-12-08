@@ -2,12 +2,14 @@
    <div
       class="card"
       @click="toggleSelect"
-      style="max-width: 16rem"
+      @mouseover="mouseover=true"
+      @mouseleave="mouseover=false"
+      style="max-width: 17rem"
       v-bind:class="{ 'border-dark': !isSelected, 'border-success': isSelected }"
    >
       <div
          class="card-footer"
-         v-bind:class="{ 'border-dark': !isSelected, 'bg-success': isSelected }"
+         v-bind:class="{ 'border-dark': !isSelected && !mouseover, 'bg-success': isSelected, 'border-primary':mouseover }"
       ></div>
       <div>
          <img
@@ -25,9 +27,9 @@
 
       <CorpsCard
          :piece="piece"
-         :displayOptions="['type', 'rarity', 'jewels', 'attack', 'elderseal', 'elements']"
+         :displayOptions="['type', 'rarity', 'jewels', 'attack', 'elderseal', 'elements','affinity','shelling','phial','insectoBoost']"
       />
-       <div class="progress" style="max-width: 100%; min-width: 100px;"> 
+       <div class="progress" style="max-width: 100%; min-width: 100px;" v-if="!piece.type.includes('bow')"> 
                        <div class=" progress-bar"  :style="{width: Math.round(piece.durability[0].red / Object.keys(piece.durability[0]).length)  +'%','background-color':'#CC0000'}"></div>
                        
                        <div class="progress-bar" :style="{width:  Math.round(piece.durability[0].orange/Object.keys(piece.durability[0]).length)+'%','background-color':'#FF8800'}"></div>
@@ -85,7 +87,7 @@ export default {
       CorpsCard,
    },
    data() {
-      return {}
+      return {mouseover:false}
    },
    computed: {
       isSelected() {

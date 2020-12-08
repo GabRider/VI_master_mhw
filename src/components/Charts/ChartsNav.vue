@@ -17,6 +17,23 @@
          </ul>
       </div>
       <div v-if="this.active !== 'Overview'">
+         <h1 v-if="infosForCharts.all.allSetsStats.defense == undefined && active == 'Defense'">
+            no armor found
+         </h1>
+         <h1 v-if="this.infosForCharts.all.allSetsStats.attack == undefined && active == 'Attack'">
+            no weapon found
+         </h1>
+         <h1
+            v-if="
+               this.infosForCharts.all.allSetsStats.elementaryDefenses == undefined &&
+               active == 'Elementary defense'
+            "
+         >
+            no armor found
+         </h1>
+         <h1 v-if="this.infosForCharts.all.allSetsStats.skills == undefined && active == 'Skills'">
+            no skills found
+         </h1>
          <BarChart
             v-if="isDefenseActive"
             :inputData="infosForCharts.all.allSetsStats.defense"
@@ -34,25 +51,54 @@
             :inputData="infosForCharts.all.allSetsStats.attack"
             :range="[0, 1000]"
          />
-         <SkillsSelectedCards v-else-if="isSkillsActive" :skills="infosForCharts.all.currentStats.skills.data[0].values" />
+         <SkillsSelectedCards
+            v-else-if="isSkillsActive"
+            :skills="infosForCharts.all.currentStats.skills.data[0].values"
+         />
       </div>
       <div v-if="this.active === 'Overview'">
-         <div class="row">
-            <div class="col-xl-4 col-lg-4 col-md-4 h-10" style="height: 10px">
-               <BarChart :inputData="infosForCharts.all.allSetsStats.defense" :range="[0, 1000]" />
+         <div class="col-sm-12 col-xl-8 col-lg-8 col-md-8 float-md-left float-lg-left float-xl-left">
+            <div class="row">
+               <div class="col-sm-12 col-xl-6 col-lg-6 col-md-6 h-10" style="height: 10px">
+                  <BarChart
+                     v-if="infosForCharts.all.allSetsStats.defense != undefined"
+                     :inputData="infosForCharts.all.allSetsStats.defense"
+                     :range="[0, 1000]"
+                  />
+               </div>
+               <div class="col-xl-6 col-lg-6 col-md-6 h-10">
+                  <RadarChart
+                     v-if="infosForCharts.all.allSetsStats.elementaryDefenses != undefined"
+                     :inputData="infosForCharts.all.allSetsStats.elementaryDefenses"
+                     :range="[0, 20]"
+                  />
+               </div>
             </div>
-            <div class="col-xl-4 col-lg-4 col-md-4">
-               <RadarChart
-                  :inputData="infosForCharts.all.allSetsStats.elementaryDefenses"
-                  :range="[0, 20]"
-               />
+            <div class="row">
+               <div class="col-xl-6 col-lg-6 col-md-6 h-10">
+           
+                  <BarChart
+                     v-if="infosForCharts.all.allSetsStats.attack != undefined"
+                     :inputData="infosForCharts.all.allSetsStats.attack"
+                     :range="[0, 1000]"
+                  />
+               </div>
             </div>
-            <div class="col-xl-4 col-lg-4 col-md-4">
+         </div>
+         <div class="col-sm-12 col-xl-4 col-lg-4 col-md-4 float-md-left float-lg-left float-xl-left">
+            <div
+               v-if="infosForCharts.all.allSetsStats.skills != undefined"
+               class="col-12"
+            >
                <h3>Skills</h3>
                <div class="row h-20">
                   <div class="px-3 mb-3 row">
                      <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" v-for="t in infosForCharts.all.allSetsStats.skills.data" v-bind:key="t.setName">
+                        <li
+                           class="nav-item"
+                           v-for="t in infosForCharts.all.allSetsStats.skills.data"
+                           v-bind:key="t.setName"
+                        >
                            <a
                               class="nav-link"
                               :id="t.setName + '-tab-skill'"
@@ -70,12 +116,6 @@
                   </div>
                </div>
                <SkillsSelectedCards :skills="this.tab.values" />
-            </div>
-         </div>
-         <div class="row">
-            <div class="col-xl-4 col-lg-4 col-md-4">
-               <div></div>
-               <BarChart :inputData="infosForCharts.all.allSetsStats.attack" :range="[0, 1000]" />
             </div>
          </div>
       </div>
@@ -111,15 +151,13 @@ export default {
       return {
          tabsNames: ["Overview", "Defense", "Elementary defense", "Attack", "Skills"],
          active: "Elementary defense",
-         tab:"",
-         
+         tab: "",
       }
    },
    watch: {
       active(v) {
          this.$emit("tabIsOverview", v === "Overview")
-         if (v === "Overview") 
-            this.tab = this.infosForCharts.all.allSetsStats.skills.data[0]
+         if (v === "Overview") this.tab = this.infosForCharts.all.allSetsStats.skills.data[0]
       },
    },
    methods: {},
@@ -143,10 +181,10 @@ export default {
          return isActive && isElementInInfos
       },
       isSkillsActive() {
+         const isElementInInfos = this.infosForCharts.all.allSetsStats.skills !== undefined
          const isActive = "Skills" === this.active || "Overview" === this.active
-         return isActive
+         return isActive && isElementInInfos
       },
-      
    },
 }
 </script>

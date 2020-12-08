@@ -28,11 +28,11 @@
             <td v-if="jewels">
                <div v-if="piece.slots.length == 0">
                   <span class="badge badge-primary">jewels</span>
-                  <img src="@/assets/empty.png" width="24" height="24" />
+                  <img src="@/assets/empty.png" width="32" height="32" />
                </div>
 
                <span v-for="lvl in getListRankJewels(piece.slots)" :key="lvl.id" class="pr-1">
-                  <img :src="getImgJewel(lvl.rank)" width="24" height="24"
+                  <img :src="getImgJewel(lvl.rank)" width="32" height="32"
                /></span>
             </td>
          </tr>
@@ -50,8 +50,19 @@
                   <img :src="getImg(piece.elements[0].type)" width="32" height="32" />
                   <span class="align-middle">{{ piece.elements[0].damage }}</span>
                </div>
+               <div v-else class="align-bottom">
+                  <span class="badge badge-primary">elements</span>
+                  <img :src="getImg('empty')" width="32" height="32" />
+               </div>
             </td>
          </tr>
+         <tr >
+            <td  v-if="affinity"><span class="badge badge-primary">Affinity</span> {{piece.attributes.affinity==undefined ? "0":piece.attributes.affinity}} %</td>
+         <td v-if="shelling"> <span class="badge badge-primary">shelling</span>{{piece.shelling.type}} <span class="badge badge-primary">level</span> {{piece.shelling.level}} </td>
+          <td v-if="phial"> <span class="badge badge-primary">phial </span> {{piece.phial.type}}  &#32; <span v-if="piece.phial.damage!=null"> {{piece.phial.damage}}</span>  </td>
+          <td v-if="insectoBoost"> <span class="badge badge-primary">boost </span> {{piece.boostType}} </td>
+         </tr>
+      
       </table>
       <span v-if="resistances" class="badge badge-primary">Elementary resistances</span>
       <table v-if="resistances" style="width: 100%">
@@ -91,6 +102,10 @@ export default {
          resistances: false,
          elderseal: false,
          elements: false,
+         affinity:false,
+         shelling:false,
+         phial:false,
+         insectoBoost:false,
       }
       this.displayOptions.forEach(option => {
          if (option === "type") res.type = true
@@ -102,6 +117,11 @@ export default {
          else if (option === "attack") res.attack = true
          else if (option === "elderseal") res.elderseal = true
          else if (option === "elements") res.elements = true
+         else if (option === "affinity") res.affinity = true
+         else if (option === "shelling" && this.piece.type==='gunlance') res.shelling = true
+         else if (option === "phial" && (this.piece.type=='charge-blade'||this.piece.type=='switch-axe')) res.phial = true
+         else if (option === "insectoBoost" && this.piece.type=='insect-glaive') res.insectoBoost = true
+         
       })
       return res
    },

@@ -152,23 +152,7 @@
                            <span aria-hidden="true">&times;</span>
                         </button>
                      </td>
-                     <td class="float-left pt-1">
-                        <div class="progress" style="max-width: 100%; min-width: 100px;"> 
-                       <div class=" progress-bar"  :style="{width: Math.round(weapon.durability[0].red / Object.keys(weapon.durability[0]).length)  +'%','background-color':'red'}"></div>
-                       
-                       <div class="progress-bar" :style="{width:  Math.round(weapon.durability[0].orange/Object.keys(weapon.durability[0]).length)+'%','background-color':'orange'}"></div>
-                       
-                       <div class="progress-bar" :style="{width:  Math.round(weapon.durability[0].yellow/Object.keys(weapon.durability[0]).length)+'%','background-color':'yellow'}"></div>
-                       
-                       <div class="progress-bar" :style="{width: Math.round(weapon.durability[0].green/Object.keys(weapon.durability[0]).length)+'%','background-color':'green'}"></div>
-                       
-                       <div class="progress-bar" :style="{width:  Math.round(weapon.durability[0].blue/Object.keys(weapon.durability[0]).length)+'%','background-color':'blue'}"></div>
-                       
-                       <div class="progress-bar" :style="{width:  Math.round(weapon.durability[0].white/Object.keys(weapon.durability[0]).length)+'%','background-color':'white'}"></div>
-                       
-                       <div class="progress-bar" :style="{width:  Math.round(weapon.durability[0].purple/Object.keys(weapon.durability[0]).length)+'%','background-color':'purple'}"></div>
-                        </div>
-                     </td>
+
                   </tr>
                   <tr>
                      <td colspan="2">{{ weapon.name }}</td>
@@ -232,6 +216,21 @@
                   </tr>
                   
                </table>
+                   <div class="progress" style="max-width: 100%; min-width: 100px;"> 
+                       <div class=" progress-bar"  :style="{width: Math.round(weapon.durability[0].red / Object.keys(weapon.durability[0]).length)  +'%','background-color':'red'}"></div>
+                       
+                       <div class="progress-bar" :style="{width:  Math.round(weapon.durability[0].orange/Object.keys(weapon.durability[0]).length)+'%','background-color':'orange'}"></div>
+                       
+                       <div class="progress-bar" :style="{width:  Math.round(weapon.durability[0].yellow/Object.keys(weapon.durability[0]).length)+'%','background-color':'yellow'}"></div>
+                       
+                       <div class="progress-bar" :style="{width: Math.round(weapon.durability[0].green/Object.keys(weapon.durability[0]).length)+'%','background-color':'green'}"></div>
+                       
+                       <div class="progress-bar" :style="{width:  Math.round(weapon.durability[0].blue/Object.keys(weapon.durability[0]).length)+'%','background-color':'blue'}"></div>
+                       
+                       <div class="progress-bar" :style="{width:  Math.round(weapon.durability[0].white/Object.keys(weapon.durability[0]).length)+'%','background-color':'white'}"></div>
+                       
+                       <div class="progress-bar" :style="{width:  Math.round(weapon.durability[0].purple/Object.keys(weapon.durability[0]).length)+'%','background-color':'purple'}"></div>
+                        </div>
             </div>
          </div>
       </div>

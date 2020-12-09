@@ -213,7 +213,7 @@ export default {
    methods: {},
    beforeCreate: function () {
       let t = this
-      /*
+      
       fetch("https://mhw-db.com/armor")
          .then(response => response.json())
          .then(armorPieces => {
@@ -224,7 +224,7 @@ export default {
             })
             console.log("allArmors", t.allArmors)
          })
-      */
+      
 
       fetch("https://mhw-db.com/weapons")
          .then(response => response.json())

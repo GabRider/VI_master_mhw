@@ -1,17 +1,7 @@
 # Rapport VI
 
-## Project setup
-```
-npm install
-```
+Lire le rapport docx ou PDF.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Lien du site
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
+[http://halley.ch:8012/](http://halley.ch:8012/)
